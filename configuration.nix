@@ -22,7 +22,10 @@
     "/".options = [ "compress=zstd" "noatime" ];
     "/home".options = [ "compress=zstd" "noatime" ];
     "/nix".options = [ "compress=zstd" "noatime" ];
-    "/persist".options = [ "compress=zstd" "noatime" ];
+    "/persist" = {
+        options = [ "compress=zstd" "noatime" ];
+        neededForBoot = true;
+    };
     "/var/log".options = [ "compress=zstd" "noatime" ];
   };
 
@@ -35,7 +38,6 @@
       "/var/lib/systemd"
       "/var/lib/bluetooth"
       "/var/lib/libvirt"
-      "/var/log"
       { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
     ];
     files = [
@@ -109,6 +111,7 @@
   users.users.koyuch = {
     isNormalUser = true;
     initialHashedPassword = "";
+    hashedPassword = "$6$kgrcRrXj6f/dBB8B$PCQHDuu69vU82gG4.bg3tHLwCoTYEUaJ8Hd.CyntJsR0xOH/ldL07Vo/797uHntFsEK5asinFXJGY.V9UKXo91";
     extraGroups = [ "wheel" "networkmanager" "libvirtd"]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh; # Make zsh default shell
 
@@ -226,7 +229,7 @@
       dockerCompat = true;
       # Required for containers under podman-compose to be able to talk to each other.
       defaultNetwork.settings.dns_enabled = true;
-    }
+    };
     libvirtd.enable = true;
   };
 
@@ -244,7 +247,7 @@
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
-  system.copySystemConfiguration = true;
+  # system.copySystemConfiguration = true;
 
   system.autoUpgrade.enable = true;
 
