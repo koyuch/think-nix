@@ -22,6 +22,23 @@
     "/persist".options = [ "compress=zstd" "noatime" ];
     "/var/log".options = [ "compress=zstd" "noatime" ];
   };
+
+  # Persistence configuration
+  environment.persistence."/persist" = {
+    directories = [
+      "/etc/nixos"     # Keep NixOS configuration
+      "/etc/NetworkManager/system-connections"
+      "/var/lib/nixos"
+      "/var/lib/systemd"
+      "/var/lib/bluetooth"
+      "/var/lib/libvirt"
+      "/var/log"
+      { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
+    ];
+    files = [
+      "/etc/machine-id"
+    ];
+  };
     
 
   networking.hostName = "think-nix"; # Define your hostname.
@@ -88,8 +105,10 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koyuch = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    initialHashedPassword = "";
+    extraGroups = [ "wheel" "networkmanager" "libvirtd"]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh; # Make zsh default shell
+
   #  packages = with pkgs; [
   #     tree
   #   ];
@@ -133,6 +152,10 @@
     whatsapp-for-linux
     teams-for-linux
     slack
+    dive # look into docker image layers
+    podman-tui # status of containers in the terminal
+    #docker-compose # start group of containers for dev
+    podman-compose # start group of containers for dev
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -155,7 +178,6 @@
       user.name = "Michal Koyuch";
       user.email = "michal@koyuch.dev";
       init.defaultBranch = "main";
-      
     };
   };
 
@@ -188,6 +210,21 @@
          ];
       };
     };
+  };
+
+  # Enable common container config files in /etc/containers
+  virtualisation.containers.enable = true;
+
+  # Enable virtualization
+  virtualisation = {
+    podman = {
+      enable = true;
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    }
+    libvirtd.enable = true;
   };
 
   # List services that you want to enable:
