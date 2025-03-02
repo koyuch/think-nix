@@ -29,6 +29,27 @@
     "/var/log".options = [ "compress=zstd" "noatime" ];
   };
 
+  boot.initrd.postResumeCommands = lib.mkAfter ''
+      mkdir /btrfs_tmp
+      mount /dev/disk/by-uuid/005607ab-908a-4aec-9cef-863cc6827601 /btrfs_tmp
+      if [[ -e /btrfs_tmp/root ]]; then
+          mkdir -p /btrfs_tmp/old_roots
+          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+          mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+      fi
+
+      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+        IFS=$'\n'
+        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+            btrfs subvolume delete "$1"
+        done
+        btrfs subvolume delete "$1"
+      done
+
+      btrfs subvolume create /btrfs_tmp/root
+      umount /btrfs_tmp
+    '';
+
   # Persistence configuration
   environment.persistence."/persist" = {
     directories = [
