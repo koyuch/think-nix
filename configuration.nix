@@ -35,7 +35,7 @@
       "/etc/nixos"     # Keep NixOS configuration
       "/etc/NetworkManager/system-connections"
       "/var/lib/nixos"
-      "/var/lib/systemd"
+      "/var/lib/systemd/coredump"
       "/var/lib/bluetooth"
       "/var/lib/libvirt"
       { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
