@@ -95,7 +95,7 @@
   ];
 
 
-  fonts.fontconfig.defaultFonts.monospace = [ "FiraCode" ];
+  fonts.fontconfig.defaultFonts.monospace = [ "Fira Code" ];
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -218,10 +218,13 @@
       autosuggestions.enable = true;
       zsh-autoenv.enable = true;
       syntaxHighlighting.enable = true;
-      promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      promptInit = ''
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
+        [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+      '';
       ohMyZsh = {
          enable = true;
-         theme = "powerlevel10k";
          plugins = [
            "git"
            "history"
