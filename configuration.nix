@@ -112,8 +112,8 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koyuch = {
     isNormalUser = true;
-    initialHashedPassword = "";
-    hashedPassword = "$6$kgrcRrXj6f/dBB8B$PCQHDuu69vU82gG4.bg3tHLwCoTYEUaJ8Hd.CyntJsR0xOH/ldL07Vo/797uHntFsEK5asinFXJGY.V9UKXo91";
+    # generated with `mkpasswd -m sha-512`
+    hashedPassword = "$6$1ZhuIyw0X6Zsps8q$CgN2iaTNzPyA0Vf1cBDH7GtBe3euP21nPw5BnHNBjrHf.pF/weJqNgeCDGbSUBmY1U.tPcqeKK0MlDN/AkfYe/";
     extraGroups = [ "wheel" "networkmanager" "libvirtd"]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh; # Make zsh default shell
 
