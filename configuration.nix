@@ -175,6 +175,7 @@
     kitty
     kitty-themes
     kdePackages.yakuake
+    freerdp3
     mpg123
     vlc
     firefox
