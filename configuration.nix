@@ -173,6 +173,7 @@
     nix-bash-completions
     kitty
     kitty-themes
+    kdePackages.yakuake
     mpg123
     vlc
     firefox
