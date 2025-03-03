@@ -71,7 +71,7 @@
       "/etc/machine-id"
     ];
   };
-    
+
 
   networking.hostName = "think-nix"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -114,7 +114,7 @@
   };
 
   # qt.style = "breeze";
-  
+
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -197,10 +197,12 @@
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-             "idea-ultimate"
-             "spotify"
-             "slack"
-           ];
+     "idea-ultimate"
+     "spotify"
+     "slack"
+   ];
+
+  security.pam.services.login.gnupg.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
