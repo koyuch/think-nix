@@ -166,6 +166,7 @@
       pass-otp
       pass-genphrase
     ]))
+    wl-clipboard
     fira-code
     zsh-completions
     nix-zsh-completions
