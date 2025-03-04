@@ -3,7 +3,7 @@
 
 {
   programs.konsole.profiles."Default" = {
-    font.name = "Fira Code";
+#    font.name = "MesloLGS NF";
     extraConfig = {
       HistorySize = 10000;
     };
@@ -14,7 +14,7 @@
 
     fonts = {
       fixedWidth = {
-        family = "Fira Code";
+        family = "MesloLGS NF";
         pointSize = 11;
       };
     };

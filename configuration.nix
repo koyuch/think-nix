@@ -3,7 +3,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 
 {
   imports =
@@ -96,12 +96,13 @@
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-emoji
-    fira-code
-    fira-code-symbols
+    pkgs-unstable.nerd-fonts.fira-code
+    meslo-lgs-nf
+    # (nerdfonts.override { fonts = [ "FiraCode" ]; })  # deprecated way
   ];
 
 
-  fonts.fontconfig.defaultFonts.monospace = [ "Fira Code" ];
+  fonts.fontconfig.defaultFonts.monospace = [ "MesloLGS NF" ];
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -172,6 +173,8 @@
     nix-zsh-completions
     bash-completion
     nix-bash-completions
+    tmux
+    byobu
     kitty
     kitty-themes
     kdePackages.yakuake
