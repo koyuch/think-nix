@@ -169,8 +169,6 @@
     ]))
     wl-clipboard
     fira-code
-    zsh-completions
-    nix-zsh-completions
     bash-completion
     nix-bash-completions
     tmux
@@ -185,7 +183,6 @@
     chromium
     krusader
     kdiff3
-    zsh-powerlevel10k
     vscodium
     virt-manager-qt
     jetbrains.idea-ultimate
@@ -200,70 +197,22 @@
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-     "idea-ultimate"
-     "spotify"
-     "slack"
-   ];
+    "idea-ultimate"
+    "spotify"
+    "slack"
+  ];
+
+  programs.zsh.enable = true;
+
+  # Enable zsh completion. Don't forget to add
+  # to your system configuration to get completion for system packages (e.g. systemd.
+  environment.pathsToLink = [ "/share/zsh" ];
 
   security.pam.services.login.gnupg.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    vimAlias = true;
-  };
-
-  programs.git = {
-    enable = true;
-    config = {
-      user.name = "Michal Koyuch";
-      user.email = "michal@koyuch.dev";
-      init.defaultBranch = "main";
-    };
-  };
-
-  # enable zsh and oh my zsh
-  programs = {
-    zsh = {
-      enable = true;
-      enableBashCompletion = true;
-      autosuggestions.enable = true;
-      zsh-autoenv.enable = true;
-      syntaxHighlighting.enable = true;
-      promptInit = ''
-        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-        # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
-        [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-      '';
-      ohMyZsh = {
-         enable = true;
-         plugins = [
-           "git"
-           "history"
-           "aliases"
-           "colored-man-pages"
-           "colorize"
-           "command-not-found"
-           "python"
-           "rust"
-           "docker"
-           "man"
-           "sudo"
-           "pass"
-           "systemd"
-           "history-substring-search"
-         ];
-      };
-    };
-  };
 
   # Enable common container config files in /etc/containers
   virtualisation.containers.enable = true;
