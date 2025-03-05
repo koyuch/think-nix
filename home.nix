@@ -72,6 +72,8 @@
     enableZshIntegration = true;
   };
 
+  services.pass-secret-service.enable = true;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
