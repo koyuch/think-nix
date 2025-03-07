@@ -15,9 +15,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, impermanence, home-manager, plasma-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, impermanence, home-manager, plasma-manager, nur, ... }@inputs: {
     # hostname
     nixosConfigurations.think-nix = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
@@ -32,6 +36,8 @@
       };
       modules = [
         impermanence.nixosModules.impermanence
+        # Adds the NUR overlay
+        nur.modules.nixos.default
         # Import the previous configuration.nix we used, so the old configuration file still takes effect
         ./configuration.nix
 

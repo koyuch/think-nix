@@ -166,6 +166,7 @@
       pass-audit
       pass-otp
       pass-genphrase
+      nur.repos.onemoresuza.pass-extension-tail
     ]))
     wl-clipboard
     fira-code
