@@ -135,6 +135,13 @@
     };
   };
 
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
+  };
+
   # Add other home-manager configurations here
 
   home.stateVersion = "24.11";

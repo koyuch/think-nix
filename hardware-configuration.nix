@@ -37,10 +37,10 @@
       options = [ "subvol=persist" ];
     };
 
-  fileSystems."/var/log" =
+  fileSystems."/var/lib/libvirt" =
     { device = "/dev/disk/by-uuid/005607ab-908a-4aec-9cef-863cc6827601";
       fsType = "btrfs";
-      options = [ "subvol=log" ];
+      options = [ "subvol=var/lib/libvirt" ];
     };
 
   fileSystems."/boot" =

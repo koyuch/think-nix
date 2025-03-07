@@ -32,7 +32,7 @@
         options = [ "compress=zstd" "noatime" ];
         neededForBoot = true;
     };
-    "/var/log".options = [ "compress=zstd" "noatime" ];
+    "/var/lib/libvirt".options = [ "compress=zstd" "noatime" ];
   };
 
   boot.initrd.postResumeCommands = lib.mkAfter ''
@@ -64,7 +64,7 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/bluetooth"
-      "/var/lib/libvirt"
+      "/var/log"
       { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
     ];
     files = [
@@ -185,7 +185,7 @@
     krusader
     kdiff3
     vscodium
-    virt-manager-qt
+    virt-manager
     jetbrains.idea-ultimate
     spotify
     whatsapp-for-linux
@@ -215,6 +215,7 @@
   # started in user sessions.
   programs.mtr.enable = true;
 
+  programs.virt-manager.enable = true;
   # Enable common container config files in /etc/containers
   virtualisation.containers.enable = true;
 
@@ -228,6 +229,7 @@
       defaultNetwork.settings.dns_enabled = true;
     };
     libvirtd.enable = true;
+    spiceUSBRedirection.enable = true;
   };
 
   # List services that you want to enable:
