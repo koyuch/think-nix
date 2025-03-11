@@ -180,7 +180,7 @@
     freerdp3
     mpg123
     vlc
-    firefox
+    (firefox.override { nativeMessagingHosts = [ passff-host ]; })
     chromium
     krusader
     kdiff3
