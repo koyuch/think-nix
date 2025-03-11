@@ -70,6 +70,9 @@
     enable = true;
     enableSshSupport = true;
     enableZshIntegration = true;
+    extraConfig = ''
+      pinentry-program ${pkgs.pinentry-qt}/bin/pinentry
+    '';
   };
 
   services.pass-secret-service.enable = true;
