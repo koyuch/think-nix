@@ -31,7 +31,7 @@
         pkgs-unstable = import nixpkgs-unstable {
           # Refer to the `system` parameter from the outer scope recursively
           inherit system;
-          # config.allowUnfree = true;
+          config.allowUnfree = true;
         };
       };
       modules = [

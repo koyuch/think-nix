@@ -187,7 +187,7 @@
     kdiff3
     vscodium
     virt-manager
-    jetbrains.idea-ultimate
+    pkgs-unstable.jetbrains.idea-ultimate
     spotify
     whatsapp-for-linux
     teams-for-linux
