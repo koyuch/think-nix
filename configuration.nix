@@ -180,6 +180,7 @@
     freerdp3
     mpg123
     vlc
+    kodi
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
     chromium
     krusader
