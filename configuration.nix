@@ -181,7 +181,7 @@
     mpg123
     vlc
     kodi
-    (firefox.override { nativeMessagingHosts = [ passff-host ]; })
+    (pkgs-unstable.firefox.override { nativeMessagingHosts = [ passff-host ]; })
     chromium
     krusader
     kdiff3
