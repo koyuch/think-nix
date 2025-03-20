@@ -185,7 +185,13 @@
     chromium
     krusader
     kdiff3
-    vscodium
+    (vscode-with-extensions.override {
+      vscode = pkgs-unstable.vscodium;
+      vscodeExtensions = with pkgs-unstable.vscode-extensions; [
+        continue.continue
+        saoudrizwan.claude-dev
+      ];
+    })
     virt-manager
     pkgs-unstable.jetbrains.idea-ultimate
     spotify
