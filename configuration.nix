@@ -66,6 +66,7 @@
       "/var/lib/bluetooth"
       "/var/log"
       { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
+      "/var/db/sudo"  # persist sudo timestamps, so there'll be no "welcome" message
     ];
     files = [
       "/etc/machine-id"
