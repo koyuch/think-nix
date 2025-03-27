@@ -185,11 +185,13 @@
     chromium
     krusader
     kdiff3
-    (vscode-with-extensions.override {
+    (pkgs-unstable.vscode-with-extensions.override {
       vscode = pkgs-unstable.vscodium;
       vscodeExtensions = with pkgs-unstable.vscode-extensions; [
         continue.continue
         saoudrizwan.claude-dev
+        github.copilot
+        github.copilot-chat
       ];
     })
     virt-manager
