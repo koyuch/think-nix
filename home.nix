@@ -70,6 +70,10 @@
     enable = true;
     enableSshSupport = true;
     enableZshIntegration = true;
+    defaultCacheTtl = 28800;        # 8 hours
+    maxCacheTtl = 86400;            # 24 hours
+    defaultCacheTtlSsh = 28800;     # 8 hours for SSH keys
+    maxCacheTtlSsh = 86400;         # 24 hours for SSH keys
     extraConfig = ''
       pinentry-program ${pkgs.pinentry-qt}/bin/pinentry
     '';
