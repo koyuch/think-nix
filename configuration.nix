@@ -245,6 +245,20 @@
 
   # List services that you want to enable:
 
+  security.sudo = {
+    # Enable sudo
+    enable = true;
+
+    # Extend the timeout to 30 minutes (default is 5 minutes)
+    extraConfig = ''
+      # Set timeout to 30 minutes
+      Defaults timestamp_timeout=30
+
+      # Optional: Set per-terminal timestamps instead of global
+      Defaults timestamp_type=ppid
+    '';
+  };
+
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
