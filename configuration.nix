@@ -239,8 +239,20 @@
       # Required for containers under podman-compose to be able to talk to each other.
       defaultNetwork.settings.dns_enabled = true;
     };
-    libvirtd.enable = true;
     spiceUSBRedirection.enable = true;
+
+    libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+        runAsRoot = true;
+        ovmf = {
+          enable = true;
+        };
+      };
+      onBoot = "ignore";
+      onShutdown = "shutdown";
+    };
   };
 
   # List services that you want to enable:
