@@ -77,6 +77,10 @@
     extraConfig = ''
       pinentry-program ${pkgs.pinentry-qt}/bin/pinentry
     '';
+    sshKeys = [
+      "~/.ssh/id_ed25519"
+      "~/.ssh/koyuch@trivia.pem"
+    ];
   };
 
   services.pass-secret-service.enable = true;
