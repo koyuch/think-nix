@@ -47,10 +47,10 @@
 #          action = "nothing";
           idleTimeout = 1800;
         };
-#        turnOffDisplay = {
-#          idleTimeout = 1000;
+        turnOffDisplay = {
+          idleTimeout = 900;
 #          idleTimeoutWhenLocked = "immediately";
-#        };
+        };
       };
       battery = {
         powerButtonAction = "sleep";
