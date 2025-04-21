@@ -47,6 +47,10 @@
 #          action = "nothing";
           idleTimeout = 1800;
         };
+        dimDisplay = {
+#          enable = false;
+          idleTimeout = 900;
+        };
         turnOffDisplay = {
           idleTimeout = 900;
 #          idleTimeoutWhenLocked = "immediately";
@@ -113,6 +117,10 @@
     # Other user-specific packages
   ];
 
+  programs.bash = {
+    enable = true;
+  };
+
   # enable zsh and oh my zsh
   programs.zsh = {
     enable = true;
@@ -142,6 +150,7 @@
         "pass"
         "systemd"
         "history-substring-search"
+        "helm"
       ];
     };
   };
@@ -150,6 +159,7 @@
     enable = true;
     nix-direnv.enable = true;
     enableZshIntegration = true;
+    enableBashIntegration = true;
   };
 
   dconf.settings = {
