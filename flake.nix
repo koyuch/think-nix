@@ -19,9 +19,18 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, impermanence, home-manager, plasma-manager, nur, ... }@inputs: {
+  outputs = { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , impermanence
+    , home-manager
+    , plasma-manager
+    , nur
+    , nix-vscode-extensions
+    , ... }@inputs: {
     # hostname
     nixosConfigurations.think-nix = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
@@ -32,6 +41,9 @@
           # Refer to the `system` parameter from the outer scope recursively
           inherit system;
           config.allowUnfree = true;
+          overlays = [
+            nix-vscode-extensions.overlays.default
+          ];
         };
       };
       modules = [

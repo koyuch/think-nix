@@ -1,4 +1,3 @@
-
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
@@ -13,6 +12,8 @@
 
   # Enable the Flakes feature and the accompanying new nix command-line tool
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nix.settings.auto-optimise-store = true;
 
   nix.gc = {
     automatic = true;
@@ -132,6 +133,8 @@
   # OR
   services.pipewire = {
     enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
     pulse.enable = true;
   };
 
@@ -157,7 +160,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     gnupg
     pinentry-qt
@@ -184,21 +187,10 @@
     mpg123
     vlc
     kodi
-    (pkgs-unstable.firefox.override { nativeMessagingHosts = [ passff-host ]; })
     chromium
     krusader
     kdiff3
-    (pkgs-unstable.vscode-with-extensions.override {
-      vscode = pkgs-unstable.vscodium;
-      vscodeExtensions = with pkgs-unstable.vscode-extensions; [
-        continue.continue
-        saoudrizwan.claude-dev
-        github.copilot
-        github.copilot-chat
-      ];
-    })
     virt-manager
-    pkgs-unstable.jetbrains.idea-ultimate
     spotify
     whatsapp-for-linux
     teams-for-linux
@@ -208,12 +200,73 @@
     #docker-compose # start group of containers for dev
     podman-compose # start group of containers for dev
     pre-commit
-  ];
+    jdk
+    nodejs
+    jq
+    awscli2
+    kubectl
+    kubernetes-helm
+#    puppeteer-cli
+#    xorg.libXScrnSaver
+    aider-chat
+  ]) ++
+  (with pkgs-unstable; [
+    (firefox.override { nativeMessagingHosts = [ passff-host ]; })
+    (vscode-with-extensions.override {
+          vscode = vscodium;
+    #      vscode = (vscode.override{ isInsiders = true; }).overrideAttrs (oldAttrs: rec {
+    #                     src = (builtins.fetchTarball {
+    #                       url = "https://update.code.visualstudio.com/latest/linux-x64/insider";
+    #                       sha256 = "0msslm3xhrwdg63wrmrw1bgngcv3ldpywc6kil1mqq91nd05rmx9";
+    #                     });
+    #                     version = "latest";
+    #                   });
+      vscodeExtensions =
+#        (with pkgs.vscode-extensions; [
+#
+#        ]) ++
+        (with vscode-extensions; [
+          github.copilot
+          # Replace the dynamic version with a pinned version
+          (vscode-utils.extensionFromVscodeMarketplace {
+            name = "copilot-chat";
+            publisher = "github";
+            version = "0.26.2025030506"; # Replace with your desired version
+            sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
+          })
+          visualstudioexptteam.vscodeintellicode
+          codeium.codeium
+        ]) ++
+        (with open-vsx; [
+          jnoortheen.nix-ide
+          continue.continue
+          saoudrizwan.claude-dev
+          rooveterinaryinc.roo-cline
+          kilocode.kilo-code
+#          codeium.codeium
+          vscjava.vscode-java-pack
+          redhat.java
+          vscjava.vscode-java-debug
+          vscjava.vscode-java-test
+          vscjava.vscode-maven
+          vscjava.vscode-gradle
+          vscjava.vscode-java-dependency
+          ms-azuretools.vscode-docker
+          ms-kubernetes-tools.vscode-kubernetes-tools
+          redhat.vscode-yaml
+          sonarsource.sonarlint-vscode
+          jeppeandersen.vscode-kafka
+        ]);
+    })
+    aider-chat-full
+#    code-cursor
+    jetbrains.idea-ultimate
+  ]);
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "idea-ultimate"
     "spotify"
     "slack"
+    "vscode-extension-github-copilot-chat"
   ];
 
   programs.zsh.enable = true;
@@ -254,7 +307,15 @@
       };
       onBoot = "ignore";
       onShutdown = "shutdown";
+
+      allowedBridges = ["default"];
     };
+  };
+
+  environment.sessionVariables = {
+    DOCKER_HOST = "unix:///run/user/$UID/podman/podman.sock";
+    PUPPETEER_SKIP_DOWNLOAD = "true";
+    PUPPETEER_EXECUTABLE_PATH = "${lib.getExe pkgs.chromium}";
   };
 
   # List services that you want to enable:
