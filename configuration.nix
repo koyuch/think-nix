@@ -17,7 +17,7 @@
 
   nix.gc = {
     automatic = true;
-    dates = "weekly";
+    dates = "daily";
     options = "--delete-older-than 7d";
   };
 
@@ -206,6 +206,7 @@
     awscli2
     kubectl
     kubernetes-helm
+    k9s
 #    puppeteer-cli
 #    xorg.libXScrnSaver
     aider-chat
@@ -213,7 +214,7 @@
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
     (vscode-with-extensions.override {
-          vscode = vscodium;
+          vscode = vscodium-fhs;
     #      vscode = (vscode.override{ isInsiders = true; }).overrideAttrs (oldAttrs: rec {
     #                     src = (builtins.fetchTarball {
     #                       url = "https://update.code.visualstudio.com/latest/linux-x64/insider";
@@ -222,27 +223,37 @@
     #                     version = "latest";
     #                   });
       vscodeExtensions =
-#        (with pkgs.vscode-extensions; [
-#
-#        ]) ++
         (with vscode-extensions; [
           github.copilot
-          # Replace the dynamic version with a pinned version
-          (vscode-utils.extensionFromVscodeMarketplace {
-            name = "copilot-chat";
-            publisher = "github";
-            version = "0.26.2025030506"; # Replace with your desired version
-            sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
-          })
+          github.copilot-chat
           visualstudioexptteam.vscodeintellicode
-          codeium.codeium
         ]) ++
+#        vscode-utils.extensionsFromVscodeMarketplace [
+#          {
+#            name = "copilot-chat";
+#            publisher = "github";
+#            version = "0.26.2025030506"; # Replace with your desired version
+#            sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
+#          }
+#          {
+#            # https://marketplace.visualstudio.com/items?itemName=Codeium.codeium
+#            name = "codeium";
+#            publisher = "Codeium";
+#            version = "1.42";
+#            sha256 = "WejMBIG7bl7iOPsdB22jqNmT7hfCsJ/1j4P/Clv/t74=";
+#          }
+#        ] ++
+        (with vscode-marketplace; [
+          tomaszbartoszewski.avro-tools
+        ]) ++
+#        (with (forVSCodeVersion vscodium.version).vscode-marketplace ; [
+#          github.copilot-chat
+#        ]) ++
         (with open-vsx; [
           jnoortheen.nix-ide
-          continue.continue
+#          continue.continue
           saoudrizwan.claude-dev
           rooveterinaryinc.roo-cline
-          kilocode.kilo-code
 #          codeium.codeium
           vscjava.vscode-java-pack
           redhat.java
@@ -256,10 +267,13 @@
           redhat.vscode-yaml
           sonarsource.sonarlint-vscode
           jeppeandersen.vscode-kafka
+          bierner.markdown-mermaid
+#          amazonwebservices.amazon-q-vscode
         ]);
     })
-    aider-chat-full
-#    code-cursor
+#    aider-chat-full
+    code-cursor
+    windsurf
     jetbrains.idea-ultimate
   ]);
 
@@ -280,6 +294,8 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
+
+  programs.nix-ld.enable = true;
 
   programs.virt-manager.enable = true;
   # Enable common container config files in /etc/containers
