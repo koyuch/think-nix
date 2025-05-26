@@ -197,8 +197,8 @@
     slack
     dive # look into docker image layers
     podman-tui # status of containers in the terminal
-    #docker-compose # start group of containers for dev
-    podman-compose # start group of containers for dev
+    docker-compose # start group of containers for dev
+#    podman-compose # start group of containers for dev
     pre-commit
     jdk
     nodejs
@@ -247,13 +247,22 @@
 
   # Enable virtualization
   virtualisation = {
-    podman = {
+    docker = {
       enable = true;
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
+      storageDriver = "btrfs";
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
     };
+#    podman = {
+#      enable = true;
+#      # Create a `docker` alias for podman, to use it as a drop-in replacement
+#      dockerCompat = true;
+#      dockerSocket.enable = true;
+#      # Required for containers under podman-compose to be able to talk to each other.
+#      defaultNetwork.settings.dns_enabled = true;
+#    };
     spiceUSBRedirection.enable = true;
 
     libvirtd = {
@@ -273,7 +282,7 @@
   };
 
   environment.sessionVariables = {
-    DOCKER_HOST = "unix:///run/user/$UID/podman/podman.sock";
+#    DOCKER_HOST = "unix:///run/user/$UID/podman/podman.sock";
     PUPPETEER_SKIP_DOWNLOAD = "true";
     PUPPETEER_EXECUTABLE_PATH = "${lib.getExe pkgs.chromium}";
   };
