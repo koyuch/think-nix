@@ -1,5 +1,5 @@
 # home.nix
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-unstable, ... }:
 
 {
   programs.konsole.profiles."Default" = {
@@ -160,6 +160,59 @@
     nix-direnv.enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
+  };
+
+  programs.vscode = with pkgs-unstable; {
+        enable = true;
+        package = vscodium; # or pkgs.vscode
+        extensions =
+          (with vscode-extensions; [
+            github.copilot
+            github.copilot-chat
+            visualstudioexptteam.vscodeintellicode
+          ]) ++
+  #        vscode-utils.extensionsFromVscodeMarketplace [
+  #          {
+  #            name = "copilot-chat";
+  #            publisher = "github";
+  #            version = "0.26.2025030506"; # Replace with your desired version
+  #            sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
+  #          }
+  #          {
+  #            # https://marketplace.visualstudio.com/items?itemName=Codeium.codeium
+  #            name = "codeium";
+  #            publisher = "Codeium";
+  #            version = "1.42";
+  #            sha256 = "WejMBIG7bl7iOPsdB22jqNmT7hfCsJ/1j4P/Clv/t74=";
+  #          }
+  #        ] ++
+          (with vscode-marketplace; [
+            tomaszbartoszewski.avro-tools
+          ]) ++
+  #        (with (forVSCodeVersion vscodium.version).vscode-marketplace ; [
+  #          github.copilot-chat
+  #        ]) ++
+          (with open-vsx; [
+            jnoortheen.nix-ide
+            continue.continue
+            saoudrizwan.claude-dev
+            rooveterinaryinc.roo-cline
+#            codeium.codeium
+            vscjava.vscode-java-pack
+            redhat.java
+            vscjava.vscode-java-debug
+            vscjava.vscode-java-test
+            vscjava.vscode-maven
+            vscjava.vscode-gradle
+            vscjava.vscode-java-dependency
+            ms-azuretools.vscode-docker
+            ms-kubernetes-tools.vscode-kubernetes-tools
+            redhat.vscode-yaml
+            sonarsource.sonarlint-vscode
+            jeppeandersen.vscode-kafka
+            bierner.markdown-mermaid
+  #          amazonwebservices.amazon-q-vscode
+          ]);
   };
 
   dconf.settings = {

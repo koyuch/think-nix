@@ -193,7 +193,7 @@
     virt-manager
     spotify
     whatsapp-for-linux
-    teams-for-linux
+#    teams-for-linux # not working temporarily (18.5.2025)
     slack
     dive # look into docker image layers
     podman-tui # status of containers in the terminal
@@ -202,6 +202,7 @@
     pre-commit
     jdk
     nodejs
+    uv
     jq
     awscli2
     kubectl
@@ -210,67 +211,10 @@
 #    puppeteer-cli
 #    xorg.libXScrnSaver
     aider-chat
+    tesseract
   ]) ++
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
-    (vscode-with-extensions.override {
-          vscode = vscodium-fhs;
-    #      vscode = (vscode.override{ isInsiders = true; }).overrideAttrs (oldAttrs: rec {
-    #                     src = (builtins.fetchTarball {
-    #                       url = "https://update.code.visualstudio.com/latest/linux-x64/insider";
-    #                       sha256 = "0msslm3xhrwdg63wrmrw1bgngcv3ldpywc6kil1mqq91nd05rmx9";
-    #                     });
-    #                     version = "latest";
-    #                   });
-      vscodeExtensions =
-        (with vscode-extensions; [
-          github.copilot
-          github.copilot-chat
-          visualstudioexptteam.vscodeintellicode
-        ]) ++
-#        vscode-utils.extensionsFromVscodeMarketplace [
-#          {
-#            name = "copilot-chat";
-#            publisher = "github";
-#            version = "0.26.2025030506"; # Replace with your desired version
-#            sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
-#          }
-#          {
-#            # https://marketplace.visualstudio.com/items?itemName=Codeium.codeium
-#            name = "codeium";
-#            publisher = "Codeium";
-#            version = "1.42";
-#            sha256 = "WejMBIG7bl7iOPsdB22jqNmT7hfCsJ/1j4P/Clv/t74=";
-#          }
-#        ] ++
-        (with vscode-marketplace; [
-          tomaszbartoszewski.avro-tools
-        ]) ++
-#        (with (forVSCodeVersion vscodium.version).vscode-marketplace ; [
-#          github.copilot-chat
-#        ]) ++
-        (with open-vsx; [
-          jnoortheen.nix-ide
-#          continue.continue
-          saoudrizwan.claude-dev
-          rooveterinaryinc.roo-cline
-#          codeium.codeium
-          vscjava.vscode-java-pack
-          redhat.java
-          vscjava.vscode-java-debug
-          vscjava.vscode-java-test
-          vscjava.vscode-maven
-          vscjava.vscode-gradle
-          vscjava.vscode-java-dependency
-          ms-azuretools.vscode-docker
-          ms-kubernetes-tools.vscode-kubernetes-tools
-          redhat.vscode-yaml
-          sonarsource.sonarlint-vscode
-          jeppeandersen.vscode-kafka
-          bierner.markdown-mermaid
-#          amazonwebservices.amazon-q-vscode
-        ]);
-    })
 #    aider-chat-full
     code-cursor
     windsurf
