@@ -128,7 +128,7 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    initExtra = ''
+    initContent = ''
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -165,7 +165,7 @@
   programs.vscode = with pkgs-unstable; {
         enable = true;
         package = vscodium; # or pkgs.vscode
-        extensions =
+        profiles.default.extensions =
           (with vscode-extensions; [
             github.copilot
             github.copilot-chat
@@ -224,5 +224,12 @@
 
   # Add other home-manager configurations here
 
+  # This value determines the Home Manager release that your configuration is
+  # compatible with. This helps avoid breakage when a new Home Manager release
+  # introduces backwards incompatible changes.
+  #
+  # You should not change this value, even if you update Home Manager. If you do
+  # want to update the value, then make sure to first check the Home Manager
+  # release notes.
   home.stateVersion = "24.11";
 }
