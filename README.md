@@ -107,6 +107,33 @@ sudo nix-collect-garbage --delete-older-than 7d
 - `home.nix`: User-specific Home Manager configuration
 - `hardware-configuration.nix`: Hardware-specific configuration (generated)
 
+## 🔗 Useful Resources
+
+### Nix & Nixpkgs
+- [Nix Manual](https://nixos.org/manual/nix/stable/) - Core Nix package manager documentation
+- [Nixpkgs Manual](https://nixos.org/manual/nixpkgs/stable/) - Nixpkgs contributor and user guide
+- [Nixpkgs GitHub](https://github.com/NixOS/nixpkgs) - Source code and issues
+- [Nix Pills](https://nixos.org/guides/nix-pills/) - Great learning resource for Nix
+- [Nix.dev](https://nix.dev/) - Opinionated guide for developers
+
+### NixOS Documentation
+- [NixOS Manual](https://nixos.org/manual/nixos/stable/)
+- [Nix Pills](https://nixos.org/guides/nix-pills/) - Great learning resource for Nix
+- [NixOS Wiki](https://nixos.wiki/)
+- [Home Manager Manual](https://nix-community.github.io/home-manager/)
+- [Home Manager Options Search](https://home-manager-options.extranix.com/) - Search Home Manager options
+- [Plasma Manager Options](https://nix-community.github.io/plasma-manager/options.xhtml) - KDE Plasma configuration options
+
+### Package Search
+- [NixOS Package Search](https://search.nixos.org/packages) - Official package search
+- [NUR Package Search](https://nur.nix-community.org/) - User-contributed packages
+- [MyNixOS](https://mynixos.org/) - Search configurations and options
+
+### Community
+- [NixOS Discourse](https://discourse.nixos.org/)
+- [NixOS Subreddit](https://www.reddit.com/r/NixOS/)
+- [NixOS Matrix](https://matrix.to/#/#community:nixos.org) (Chat)
+
 ## 🤝 Contributing
 
 This is a personal configuration, but feel free to take inspiration or report issues.
