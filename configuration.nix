@@ -142,6 +142,8 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = false;
 
+  services.usbmuxd.enable = true;
+
   users.mutableUsers = false;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -213,6 +215,8 @@
 #    xorg.libXScrnSaver
     aider-chat
     tesseract
+    libimobiledevice # for iphones
+    ifuse # for iphones
   ]) ++
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
