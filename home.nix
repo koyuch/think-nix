@@ -194,10 +194,11 @@
   #        ]) ++
           (with open-vsx; [
             jnoortheen.nix-ide
-            continue.continue
+#            continue.continue
             saoudrizwan.claude-dev
             rooveterinaryinc.roo-cline
-#            codeium.codeium
+            kilocode.kilo-code
+            codeium.codeium # windsurf
             vscjava.vscode-java-pack
             redhat.java
             vscjava.vscode-java-debug
