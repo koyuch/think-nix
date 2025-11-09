@@ -164,56 +164,65 @@
 
   programs.vscode = with pkgs-unstable; {
         enable = true;
-        package = vscodium; # or pkgs.vscode
+        package = vscode; # or pkgs.vscode
         profiles.default.extensions =
           (with vscode-extensions; [
             github.copilot
             github.copilot-chat
-            visualstudioexptteam.vscodeintellicode
-          ]) ++
-  #        vscode-utils.extensionsFromVscodeMarketplace [
-  #          {
-  #            name = "copilot-chat";
-  #            publisher = "github";
-  #            version = "0.26.2025030506"; # Replace with your desired version
-  #            sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
-  #          }
-  #          {
-  #            # https://marketplace.visualstudio.com/items?itemName=Codeium.codeium
-  #            name = "codeium";
-  #            publisher = "Codeium";
-  #            version = "1.42";
-  #            sha256 = "WejMBIG7bl7iOPsdB22jqNmT7hfCsJ/1j4P/Clv/t74=";
-  #          }
-  #        ] ++
-          (with vscode-marketplace; [
-            tomaszbartoszewski.avro-tools
-          ]) ++
-  #        (with (forVSCodeVersion vscodium.version).vscode-marketplace ; [
-  #          github.copilot-chat
-  #        ]) ++
-          (with open-vsx; [
-            jnoortheen.nix-ide
-#            continue.continue
-            saoudrizwan.claude-dev
-            rooveterinaryinc.roo-cline
+            rooveterinaryinc.roo-cline # roo code
             kilocode.kilo-code
-            codeium.codeium # windsurf
-            vscjava.vscode-java-pack
-            redhat.java
-            vscjava.vscode-java-debug
-            vscjava.vscode-java-test
-            vscjava.vscode-maven
-            vscjava.vscode-gradle
-            vscjava.vscode-java-dependency
+            # saoudrizwan.claude-dev # cline
+            # continue.continue
+            Google.gemini-cli-vscode-ide-companion
+            # tabnine.tabnine-vscode # just chat
+            visualstudioexptteam.vscodeintellicode
+            visualstudioexptteam.intellicode-api-usage-examples
+            # amazonwebservices.amazon-q-vscode
+
+            ms-python.python
+            ms-python.vscode-pylance
+            ms-toolsai.jupyter
+            ms-python.debugpy
+            ms-python.isort
+            ms-python.black-formatter
+            ms-python.pylint
+            ms-python.flake8
+            ms-python.mypy-type-checker
+
+            jnoortheen.nix-ide
             ms-azuretools.vscode-docker
             ms-kubernetes-tools.vscode-kubernetes-tools
             redhat.vscode-yaml
             sonarsource.sonarlint-vscode
-            jeppeandersen.vscode-kafka
             bierner.markdown-mermaid
-  #          amazonwebservices.amazon-q-vscode
+
+            # java extensions
+            # vscjava.vscode-java-pack
+            # redhat.java
+            # vscjava.vscode-java-debug
+            # vscjava.vscode-java-test
+            # vscjava.vscode-maven
+            # vscjava.vscode-gradle
+            # vscjava.vscode-java-dependency
           ]);
+          # (with open-vsx; [
+          #   # codeium.codeium # windsurf as plugin is not usable
+          #   jeppeandersen.vscode-kafka
+          # ]) ++
+          # vscode-utils.extensionsFromVscodeMarketplace [
+          #   {
+          #     name = "copilot-chat";
+          #     publisher = "github";
+          #     version = "0.23.2024110702"; #6.2025030506"; # Replace with your desired version
+          #     sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
+          #   }
+          # ];
+  #        (with vscode-marketplace; [
+  #          tomaszbartoszewski.avro-tools
+  #        ]) ++
+  #        (with (forVSCodeVersion vscodium.version).vscode-marketplace ; [
+  #          github.copilot-chat
+  #        ]) ++
   };
 
   dconf.settings = {
@@ -222,6 +231,23 @@
       uris = ["qemu:///system"];
     };
   };
+
+#  systemd.user.services.plasma-shell-watchdog = {
+#    Unit = {
+#      Description = "Plasma Shell Watchdog";
+#      After = "graphical-session.target";
+#      PartOf = "graphical-session.target";
+#    };
+#    Service = {
+#      Type = "simple";
+#      ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do if ! pgrep -f plasmashell > /dev/null; then systemctl --user restart plasma-plasmashell.service; fi; sleep 60; done'";
+#      Restart = "always";
+#      RestartSec = 10;
+#    };
+#    Install = {
+#      WantedBy = ["graphical-session.target"];
+#    };
+#  };
 
   # Add other home-manager configurations here
 
