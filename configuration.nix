@@ -165,6 +165,7 @@
   # $ nix search wget
   environment.systemPackages = (with pkgs; [
     # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    usbutils
     gnupg
     pinentry-qt
     git
@@ -204,6 +205,7 @@
 #    podman-compose # start group of containers for dev
     pre-commit
     jdk
+    python3
     nodejs
     uv
     jq
@@ -217,19 +219,29 @@
     tesseract
     libimobiledevice # for iphones
     ifuse # for iphones
+    android-tools      # adb & fastboot
+    exfatprogs        # exfat filesystem support
+#    libmtp             # MTP lib for fallback
+#    jetbrains.idea-ultimate
+    teams-for-linux
+    qbittorrent
+    rpi-imager
   ]) ++
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
 #    aider-chat-full
     code-cursor
     windsurf
-    jetbrains.idea-ultimate
+    gemini-cli
+    # jetbrains.idea-ultimate
   ]);
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "spotify"
     "slack"
     "vscode-extension-github-copilot-chat"
+    "idea-ultimate"
+    "teams-for-linux"
   ];
 
   programs.zsh.enable = true;
@@ -237,6 +249,8 @@
   # Enable zsh completion. Don't forget to add
   # to your system configuration to get completion for system packages (e.g. systemd.
   environment.pathsToLink = [ "/share/zsh" ];
+
+  services.udev.packages = [ pkgs.android-udev-rules ];
 
   security.pam.services.login.gnupg.enable = true;
 
