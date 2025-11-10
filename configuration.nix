@@ -225,7 +225,7 @@
 #    jetbrains.idea-ultimate
     teams-for-linux
     qbittorrent
-    rpi-imager
+#    rpi-imager  # temporarily disabled - build failing with Qt6 CMake error
   ]) ++
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
