@@ -171,14 +171,13 @@
           (with vscode-extensions; [
             github.copilot
             github.copilot-chat
+            github.vscode-github-actions
             rooveterinaryinc.roo-cline # roo code
             kilocode.kilo-code
             # saoudrizwan.claude-dev # cline
             # continue.continue
             Google.gemini-cli-vscode-ide-companion
             # tabnine.tabnine-vscode # just chat
-            visualstudioexptteam.vscodeintellicode
-            visualstudioexptteam.intellicode-api-usage-examples
             # amazonwebservices.amazon-q-vscode
 
             ms-python.python
@@ -190,6 +189,8 @@
             ms-python.pylint
             ms-python.flake8
             ms-python.mypy-type-checker
+
+            ms-vscode.makefile-tools
 
             jnoortheen.nix-ide
             ms-azuretools.vscode-docker
