@@ -97,16 +97,18 @@
 
   programs.git = {
     enable = true;
-    userName = "Michal Koyuch";
-    userEmail = "michal@koyuch.dev";
-    signing = {
-      key = "0558120E76D07CBE";
-      signByDefault = true;
-    };
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Michal Koyuch";
+        email = "michal@koyuch.dev";
+      };
       init.defaultBranch = "main";
       core.autocrlf = "input";
       push.autoSetupRemote = true;
+    };
+    signing = {
+      key = "0558120E76D07CBE";
+      signByDefault = true;
     };
   };
 

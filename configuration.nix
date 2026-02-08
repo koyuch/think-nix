@@ -97,7 +97,7 @@
 
   fonts.packages = with pkgs; [
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     pkgs-unstable.nerd-fonts.fira-code
     meslo-lgs-nf
     # (nerdfonts.override { fonts = [ "FiraCode" ]; })  # deprecated way
@@ -187,7 +187,7 @@
     kitty
     kitty-themes
     kdePackages.yakuake
-    freerdp3
+    freerdp
     mpg123
     vlc
     kodi
@@ -196,7 +196,7 @@
     kdiff3
     virt-manager
     spotify
-    whatsapp-for-linux
+    wasistlos
 #    teams-for-linux # not working temporarily (18.5.2025)
     slack
     dive # look into docker image layers
@@ -250,7 +250,7 @@
   # to your system configuration to get completion for system packages (e.g. systemd.
   environment.pathsToLink = [ "/share/zsh" ];
 
-  services.udev.packages = [ pkgs.android-udev-rules ];
+  services.udev.packages = [ ];
 
   security.pam.services.login.gnupg.enable = true;
 
@@ -289,9 +289,6 @@
       qemu = {
         swtpm.enable = true;
         runAsRoot = true;
-        ovmf = {
-          enable = true;
-        };
       };
       onBoot = "ignore";
       onShutdown = "shutdown";
