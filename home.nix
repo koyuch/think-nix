@@ -78,13 +78,24 @@
     maxCacheTtl = 86400;            # 24 hours
     defaultCacheTtlSsh = 28800;     # 8 hours for SSH keys
     maxCacheTtlSsh = 86400;         # 24 hours for SSH keys
-    extraConfig = ''
-      pinentry-program ${pkgs.pinentry-qt}/bin/pinentry
-    '';
-    sshKeys = [
-      "~/.ssh/id_ed25519"
-      "~/.ssh/koyuch@trivia.pem"
-    ];
+    pinentry.package = pkgs.pinentry-qt;
+  };
+
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "raspi" = {
+        hostname = "raspi";
+        user = "koyuch";
+        extraOptions = {
+          "ServerAliveInterval" = "60";
+        };
+      };
+      "*" = {
+        addKeysToAgent = "yes";
+      };
+    };
   };
 
   services.pass-secret-service.enable = true;
@@ -116,8 +127,14 @@
     zsh-completions
     nix-zsh-completions
     zsh-powerlevel10k
+    kdePackages.ksshaskpass
     # Other user-specific packages
   ];
+
+  home.sessionVariables = {
+    SSH_ASKPASS = "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
+    GIT_ASKPASS = "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
+  };
 
   programs.bash = {
     enable = true;
