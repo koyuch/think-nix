@@ -151,7 +151,7 @@
     isNormalUser = true;
     # generated with `mkpasswd -m sha-512`
     hashedPassword = "$6$1ZhuIyw0X6Zsps8q$CgN2iaTNzPyA0Vf1cBDH7GtBe3euP21nPw5BnHNBjrHf.pF/weJqNgeCDGbSUBmY1U.tPcqeKK0MlDN/AkfYe/";
-    extraGroups = [ "wheel" "networkmanager" "libvirtd"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "libvirtd" "podman"]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh; # Make zsh default shell
 
   #  packages = with pkgs; [
@@ -201,8 +201,8 @@
     slack
     dive # look into docker image layers
     podman-tui # status of containers in the terminal
-    docker-compose # start group of containers for dev
-#    podman-compose # start group of containers for dev
+    # docker-compose # start group of containers for dev
+    podman-compose # start group of containers for dev
     pre-commit
     jdk
     python3
@@ -266,22 +266,22 @@
 
   # Enable virtualization
   virtualisation = {
-    docker = {
+    # docker = {
+    #   enable = true;
+    #   storageDriver = "btrfs";
+    #   rootless = {
+    #     enable = true;
+    #     setSocketVariable = true;
+    #   };
+    # };
+    podman = {
       enable = true;
-      storageDriver = "btrfs";
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+      dockerSocket.enable = true;
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
     };
-#    podman = {
-#      enable = true;
-#      # Create a `docker` alias for podman, to use it as a drop-in replacement
-#      dockerCompat = true;
-#      dockerSocket.enable = true;
-#      # Required for containers under podman-compose to be able to talk to each other.
-#      defaultNetwork.settings.dns_enabled = true;
-#    };
     spiceUSBRedirection.enable = true;
 
     libvirtd = {
@@ -298,7 +298,7 @@
   };
 
   environment.sessionVariables = {
-#    DOCKER_HOST = "unix:///run/user/$UID/podman/podman.sock";
+    DOCKER_HOST = "unix:///run/user/$UID/podman/podman.sock";
     PUPPETEER_SKIP_DOWNLOAD = "true";
     PUPPETEER_EXECUTABLE_PATH = "${lib.getExe pkgs.chromium}";
   };
