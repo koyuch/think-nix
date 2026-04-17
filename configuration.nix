@@ -45,12 +45,15 @@
           mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
       fi
 
-      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-        IFS=$'\n'
-        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-            btrfs subvolume delete "$1"
-        done
-        btrfs subvolume delete "$1"
+      find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30 | while read -r old_root; do
+        if [[ -d "$old_root" ]]; then
+           echo "Deleting old root: $old_root"
+           # Delete nested subvolumes first
+           btrfs subvolume list -o "$old_root" | cut -f 9- -d ' ' | sort -r | while read -r subvol; do
+               btrfs subvolume delete "/btrfs_tmp/$subvol"
+           done
+           btrfs subvolume delete "$old_root"
+        fi
       done
 
       btrfs subvolume create /btrfs_tmp/root
