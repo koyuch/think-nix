@@ -186,6 +186,9 @@
         package = vscode; # or pkgs.vscode
         profiles.default.extensions =
           (with vscode-extensions; [
+            ms-vscode-remote.remote-containers
+            ms-vscode-remote.remote-ssh
+
             github.copilot
             github.copilot-chat
             github.vscode-github-actions
