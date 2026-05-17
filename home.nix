@@ -92,6 +92,10 @@
           "ServerAliveInterval" = "60";
         };
       };
+      "router" = {
+        hostname = "10.0.0.1";
+        user = "root";
+      };
       "*" = {
         addKeysToAgent = "yes";
       };
