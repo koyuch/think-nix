@@ -232,9 +232,9 @@
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
 #    aider-chat-full
-    aider-chat
-    code-cursor
-    windsurf
+    # aider-chat
+    # code-cursor
+    # windsurf
     gemini-cli
     opencode
     # jetbrains.idea-ultimate
