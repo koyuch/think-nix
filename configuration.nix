@@ -218,7 +218,6 @@
     k9s
 #    puppeteer-cli
 #    xorg.libXScrnSaver
-    aider-chat
     tesseract
     libimobiledevice # for iphones
     ifuse # for iphones
@@ -233,9 +232,11 @@
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
 #    aider-chat-full
+    aider-chat
     code-cursor
     windsurf
     gemini-cli
+    opencode
     # jetbrains.idea-ultimate
   ]);
 
