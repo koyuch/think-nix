@@ -84,41 +84,33 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
+    settings = {
       "raspi" = {
-        hostname = "raspi";
-        user = "koyuch";
-        extraOptions = {
-          "ServerAliveInterval" = "60";
-        };
+        HostName = "raspi";
+        User = "koyuch";
+        ServerAliveInterval = 60;
       };
       "raspi5" = {
-        hostname = "raspi5";
-        user = "koyuch";
-        extraOptions = {
-          "ServerAliveInterval" = "60";
-        };
+        HostName = "raspi5";
+        User = "koyuch";
+        ServerAliveInterval = 60;
       };
       "ai.raspi5" = {
-        hostname = "raspi5";
-        user = "ai";
-        extraOptions = {
-          "ServerAliveInterval" = "60";
-        };
+        HostName = "raspi5";
+        User = "ai";
+        ServerAliveInterval = 60;
       };
       "raspi5-tail" = {
-        hostname = "raspi5.tail5de296.ts.net";
-        user = "koyuch";
-        extraOptions = {
-          "ServerAliveInterval" = "60";
-        };
+        HostName = "raspi5.tail5de296.ts.net";
+        User = "koyuch";
+        ServerAliveInterval = 60;
       };
       "router" = {
-        hostname = "10.0.0.1";
-        user = "root";
+        HostName = "10.0.0.1";
+        User = "root";
       };
       "*" = {
-        addKeysToAgent = "yes";
+        AddKeysToAgent = "yes";
       };
     };
   };
@@ -129,6 +121,10 @@
     enable = true;
     defaultEditor = true;
     vimAlias = true;
+    # Silence 26.05 default-change warnings; keep legacy behavior
+    # (stateVersion 24.11). Set to false to adopt new defaults.
+    withRuby = false;
+    withPython3 = true;
   };
 
   programs.git = {

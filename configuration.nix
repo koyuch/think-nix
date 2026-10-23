@@ -23,7 +23,10 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 5;
+  # 256MB ESP shared with Windows + stale Fedora/Gentoo leftovers.
+  # Each NixOS generation costs ~57MB (kernel 13MB + initrd 44-45MB),
+  # so keep only 2 to avoid filling the ESP.
+  boot.loader.systemd-boot.configurationLimit = 2;
   boot.loader.efi.canTouchEfiVariables = true;
 
   fileSystems = {
@@ -89,6 +92,14 @@
     ];
     files = [
       "/etc/machine-id"
+      # Required by libvirtd's LoadCredentialEncrypted=secrets-encryption-key.
+      # /var/lib/systemd/credential.secret is the host key that decrypts
+      # /var/lib/libvirt/secrets/secrets-encryption-key (which lives on the
+      # persistent var/lib/libvirt subvolume). Without persisting the host key,
+      # every reboot wipes it (root subvolume is rotated), the
+      # virt-secret-init-encryption.service is skipped (ConditionPathExists),
+      # and libvirtd fails with 243/CREDENTIALS.
+      "/var/lib/systemd/credential.secret"
     ];
   };
 
@@ -189,7 +200,6 @@
     git
     wget
     curl
-    ncdu
     (pass.withExtensions (subpkgs: with subpkgs; [
       pass-audit
       pass-otp
@@ -201,6 +211,18 @@
     bash-completion
     nix-bash-completions
     gnumake
+    ripgrep # rg - grep alternative
+    fd # find alternative
+    fzf # find alternative with fuzzy search
+    bat # cat alternative
+    zoxide # z - cd alternative
+    eza # ls alternative
+    btop # htop alternative
+    ncdu # nice du
+    procs # ps alternative
+    tldr # man alternative
+    jq # json query tool
+    yq # yaml query tool
     tmux
     byobu
     kitty
@@ -227,7 +249,6 @@
     python3
     nodejs
     uv
-    jq
     awscli2
     kubectl
     kubernetes-helm
