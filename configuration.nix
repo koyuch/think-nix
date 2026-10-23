@@ -192,8 +192,78 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  # NOTE: Nix has no "meta package" for a base CLI set - the groups below
+  # are plain comments inside one list. If this grows, move groups into
+  # `let baseCli = with pkgs; [ ... ]; in` bindings.
   environment.systemPackages = (with pkgs; [
+    # --- Shell / terminal basics ---
     # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    bash-completion
+    nix-bash-completions
+    gnumake
+    tmux
+    byobu
+    kitty
+    kitty-themes
+    kdePackages.yakuake
+    wl-clipboard
+    fira-code
+    vim
+    less
+
+    # --- Modern CLI replacements (base set) ---
+    ripgrep # rg - grep alternative
+    fd # find alternative
+    fzf # fuzzy finder
+    bat # cat alternative
+    zoxide # z - smart cd
+    eza # ls alternative
+    btop # htop alternative
+    ncdu # ncdu - disk usage
+    dust # du alternative
+    duf # df alternative
+    procs # ps alternative
+    tldr # concise man pages
+    tree # directory tree
+    jq # json query tool
+    yq # yaml query tool
+
+    # --- Files / archives / sync ---
+    zip
+    unzip
+    p7zip # 7z, incl. rar extraction
+    rsync
+
+    # --- Network / DNS / HTTP ---
+    # mtr provided via programs.mtr
+    dog # modern dig alternative
+    nmap
+    iperf3
+    socat
+    xh # friendly httpie-like client
+    httpie
+
+    # --- Monitoring / hardware / tracing ---
+    # usbutils (lsusb) below in mobile section too
+    lsof
+    strace
+    pciutils # lspci
+    lm_sensors # sensors
+    iotop
+
+    # --- Nix / dev helpers ---
+    gh # github CLI
+    just # command runner
+    nil # nix LSP
+    alejandra # nix formatter
+    nix-tree # inspect /nix/store
+    pre-commit
+    jdk
+    python3
+    nodejs
+    uv
+
+    # --- Security / secrets ---
     usbutils
     gnupg
     pinentry-qt
@@ -206,28 +276,8 @@
       pass-genphrase
       nur.repos.onemoresuza.pass-extension-tail
     ]))
-    wl-clipboard
-    fira-code
-    bash-completion
-    nix-bash-completions
-    gnumake
-    ripgrep # rg - grep alternative
-    fd # find alternative
-    fzf # find alternative with fuzzy search
-    bat # cat alternative
-    zoxide # z - cd alternative
-    eza # ls alternative
-    btop # htop alternative
-    ncdu # nice du
-    procs # ps alternative
-    tldr # man alternative
-    jq # json query tool
-    yq # yaml query tool
-    tmux
-    byobu
-    kitty
-    kitty-themes
-    kdePackages.yakuake
+
+    # --- Remote / desktop ---
     freerdp
     mpg123
     vlc
@@ -244,11 +294,6 @@
     podman-tui # status of containers in the terminal
     # docker-compose # start group of containers for dev
     podman-compose # start group of containers for dev
-    pre-commit
-    jdk
-    python3
-    nodejs
-    uv
     awscli2
     kubectl
     kubernetes-helm
