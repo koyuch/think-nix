@@ -92,6 +92,27 @@
           "ServerAliveInterval" = "60";
         };
       };
+      "raspi5" = {
+        hostname = "raspi5";
+        user = "koyuch";
+        extraOptions = {
+          "ServerAliveInterval" = "60";
+        };
+      };
+      "ai.raspi5" = {
+        hostname = "raspi5";
+        user = "ai";
+        extraOptions = {
+          "ServerAliveInterval" = "60";
+        };
+      };
+      "raspi5-tail" = {
+        hostname = "raspi5.tail5de296.ts.net";
+        user = "koyuch";
+        extraOptions = {
+          "ServerAliveInterval" = "60";
+        };
+      };
       "router" = {
         hostname = "10.0.0.1";
         user = "root";
@@ -132,6 +153,9 @@
     nix-zsh-completions
     zsh-powerlevel10k
     kdePackages.ksshaskpass
+    # raspi5-lab
+    ansible
+    mise
     # Other user-specific packages
   ];
 
@@ -201,7 +225,7 @@
             kilocode.kilo-code
             # saoudrizwan.claude-dev # cline
             # continue.continue
-            Google.gemini-cli-vscode-ide-companion
+            # Google.gemini-cli-vscode-ide-companion
             # tabnine.tabnine-vscode # just chat
             # amazonwebservices.amazon-q-vscode
 

@@ -23,6 +23,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
 
   fileSystems = {
@@ -36,7 +37,20 @@
     "/var/lib/libvirt".options = [ "compress=zstd" "noatime" ];
   };
 
-  boot.initrd.postResumeCommands = lib.mkAfter ''
+  boot.initrd.systemd.services.btrfs-root-rotate = {
+    description = "Rotate the btrfs root subvolume before it is mounted";
+    wantedBy = [ "initrd.target" ];
+    after = [ "initrd-root-device.target" ];
+    before = [ "sysroot.mount" ];
+    unitConfig.DefaultDependencies = "no";
+    path = with pkgs; [
+      btrfs-progs
+      coreutils
+      findutils
+      util-linux
+    ];
+    serviceConfig.Type = "oneshot";
+    script = ''
       mkdir /btrfs_tmp
       mount /dev/disk/by-uuid/005607ab-908a-4aec-9cef-863cc6827601 /btrfs_tmp
       if [[ -e /btrfs_tmp/root ]]; then
@@ -59,6 +73,7 @@
       btrfs subvolume create /btrfs_tmp/root
       umount /btrfs_tmp
     '';
+  };
 
   # Persistence configuration
   environment.persistence."/persist" = {
@@ -185,6 +200,7 @@
     fira-code
     bash-completion
     nix-bash-completions
+    gnumake
     tmux
     byobu
     kitty
@@ -199,7 +215,7 @@
     kdiff3
     virt-manager
     spotify
-    wasistlos
+    # wasistlos
 #    teams-for-linux # not working temporarily (18.5.2025)
     slack
     dive # look into docker image layers
@@ -227,15 +243,16 @@
 #    jetbrains.idea-ultimate
     teams-for-linux
     qbittorrent
-#    rpi-imager  # temporarily disabled - build failing with Qt6 CMake error
+    rpi-imager  # temporarily disabled - build failing with Qt6 CMake error
   ]) ++
   (with pkgs-unstable; [
     (firefox.override { nativeMessagingHosts = [ passff-host ]; })
 #    aider-chat-full
-    # aider-chat
+    aider-chat
     # code-cursor
     # windsurf
-    gemini-cli
+    antigravity-cli
+    antigravity-ide
     opencode
     # jetbrains.idea-ultimate
   ]);
@@ -305,6 +322,16 @@
     DOCKER_HOST = "unix:///run/user/$UID/podman/podman.sock";
     PUPPETEER_SKIP_DOWNLOAD = "true";
     PUPPETEER_EXECUTABLE_PATH = "${lib.getExe pkgs.chromium}";
+  };
+
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
+  
+  networking.firewall = {
+    trustedInterfaces = [ "tailscale0" ];
+    checkReversePath = "loose";
   };
 
   # List services that you want to enable:
