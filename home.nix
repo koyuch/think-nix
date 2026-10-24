@@ -307,7 +307,8 @@
   # Shared global instructions for AI agents. Out-of-store symlinks point at the
   # repo checkout, so edits to agents/global.md apply immediately (no rebuild).
   # Only the instruction files are managed - the tools' own config files
-  # (opencode.json, ~/.gemini/settings.json, ...) stay hand-managed.
+  # (opencode.json, kilo.jsonc, ~/.gemini/settings.json, ...) stay hand-managed,
+  # because their permissions change at runtime.
   home.file =
     let
       agentsGlobal = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/think-nix/agents/global.md";
