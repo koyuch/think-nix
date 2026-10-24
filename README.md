@@ -76,7 +76,24 @@ There is no separate `home-manager switch`: `sudo nixos-rebuild switch --flake .
 - [agents/global.md](agents/global.md): user-wide agent instructions. Home Manager symlinks it to
   `~/.config/kilo/AGENTS.md`, `~/.config/opencode/AGENTS.md`, `~/.gemini/GEMINI.md`, `~/.claude/CLAUDE.md`,
   `~/.pi/agent/AGENTS.md`, and aider's `read:` list.
+- [agents/skills/](agents/skills/): on-demand Agent Skills (spec-driven TDD, decision brainstorm, project bootstrap),
+  linked to `~/.agents/skills`.
+- Global MCP servers (context7, mcp-nixos): `programs.mcp` in `home.nix`.
 - Project dev shell scaffold: `nix flake init -t ~/projects/think-nix#devshell`.
+
+### Development
+
+```bash
+direnv allow             # or: nix develop  (installs the prek git hook)
+prek run --all-files     # gitleaks, nixfmt, deadnix, shellcheck, hygiene
+nix fmt                  # format all Nix files
+```
+
+CI (`.forgejo/workflows/ci.yml`) runs the same hooks, plus gitleaks over the full history and `nix flake check`.
+
+### Fingerprint for sudo
+
+One-time setup after switching: `fprintd-enroll`, then `fprintd-verify`. Test with `sudo -k && sudo true`.
 
 ## 🔄 Maintenance
 
