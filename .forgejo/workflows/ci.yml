@@ -1,0 +1,29 @@
+# CI on the homelab Forgejo runner. Same checks as the local pre-commit hooks,
+# plus flake evaluation. The full system build is left to `nixos-rebuild build` locally.
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container:
+      image: nixos/nix:latest
+    env:
+      NIX_CONFIG: "experimental-features = nix-command flakes"
+    steps:
+      - name: Install node + git (needed by actions/checkout)
+        run: nix profile add nixpkgs#nodejs nixpkgs#git
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # gitleaks scans the full history
+      - name: Hooks (gitleaks, nixfmt, deadnix, shellcheck, hygiene)
+        run: |
+          git config --global --add safe.directory "$PWD"
+          nix develop -c prek run --all-files --show-diff-on-failure
+      - name: Secrets in full history
+        run: nix develop -c gitleaks git --redact --no-banner .
+      - name: Flake evaluation
+        run: nix flake check --no-build

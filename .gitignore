@@ -3,3 +3,6 @@
 .kilo
 
 result
+.direnv/
+# local notes with BitLocker recovery data - never commit
+windows-recovery_options.txt

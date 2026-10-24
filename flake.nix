@@ -33,7 +33,7 @@
       nur,
       nix-vscode-extensions,
       ...
-    }@inputs:
+    }:
     {
       # Project scaffolding: `nix flake init -t ~/projects/think-nix#devshell`
       templates = {
@@ -50,6 +50,27 @@
         };
         default = self.templates.devshell;
       };
+
+      # Repo tooling: git hooks (.pre-commit-config.yaml via prek), formatter, linters.
+      devShells.x86_64-linux.default =
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        in
+        pkgs.mkShell {
+          packages = with pkgs; [
+            prek
+            gitleaks
+            nixfmt
+            deadnix
+            statix
+            shellcheck
+            nil
+          ];
+          shellHook = ''
+            [ -e .git/hooks/pre-commit ] || prek install >/dev/null
+          '';
+        };
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
 
       # hostname
       nixosConfigurations.think-nix = nixpkgs.lib.nixosSystem rec {
