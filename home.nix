@@ -156,6 +156,7 @@
     # raspi5-lab
     ansible
     mise
+    mcp-nixos # on PATH for MCP clients without an HM module (kilo.jsonc)
     # Other user-specific packages
   ];
 
@@ -323,6 +324,20 @@
           - ${config.home.homeDirectory}/projects/think-nix/agents/global.md
       '';
     };
+
+  # Global MCP servers useful in every project (no secrets here). HM writes them to
+  # ~/.config/mcp/mcp.json and injects them into tools with enableMcpIntegration.
+  # Kilo/pi have no HM module: kilo.jsonc mirrors these by hand.
+  # Project-specific MCPs (Neon, Vercel, ...) belong in the project's own config.
+  programs.mcp = {
+    enable = true;
+    servers = {
+      # current library/framework docs; works without an API key (rate-limited)
+      context7.url = "https://mcp.context7.com/mcp";
+      # NixOS / Home Manager / nixpkgs option and package lookup
+      nixos.command = "mcp-nixos"; # from home.packages
+    };
+  };
 
   # Add other home-manager configurations here
 
