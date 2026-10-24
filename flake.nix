@@ -94,7 +94,8 @@
           nur.modules.nixos.default
           # Import the previous configuration.nix we used, so the old configuration file still takes effect
           ./configuration.nix
-
+          # `nix shell nixpkgs-unstable#<pkg>` resolves to the same unstable rev as pkgs-unstable
+          { nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable; }
           # Add home-manager as a NixOS module
           home-manager.nixosModules.home-manager
           {
