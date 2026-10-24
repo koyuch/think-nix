@@ -4,7 +4,7 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs =
-    { self, nixpkgs }:
+    { nixpkgs, ... }:
     let
       systems = [
         "x86_64-linux"
@@ -16,15 +16,24 @@
     {
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
-          # Pin runtime majors to the deploy target (nodejs_24, python313, jdk21, go, rustc+cargo, ...).
           packages = with pkgs; [
+            # Runtime/toolchain: pin majors to the deploy target, e.g.
+            # nodejs_24 pnpm | python313 uv | jdk21 | go | rustc cargo
             just
+
+            # Git hooks (.pre-commit-config.yaml) + their tools
+            prek
+            gitleaks
+            nixfmt
           ];
 
-          shellHook = "";
+          shellHook = ''
+            # install the git hook shim once per clone (no-op outside a git repo)
+            if [ -d .git ] && [ ! -e .git/hooks/pre-commit ]; then prek install >/dev/null; fi
+          '';
         };
       });
 
-      formatter = forAllSystems (pkgs: pkgs.nixfmt);
+      formatter = forAllSystems (pkgs: pkgs.nixfmt-tree);
     };
 }

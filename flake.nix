@@ -39,13 +39,14 @@
       templates = {
         devshell = {
           path = ./templates/devshell;
-          description = "flake.nix devShell (nixos-unstable) + direnv .envrc";
+          description = "flake devShell (nixos-unstable) + direnv + prek hooks (gitleaks)";
           welcomeText = ''
             # Dev shell scaffolded
 
-            1. Edit `packages` in `flake.nix`
-            2. `echo .direnv/ >> .gitignore`
-            3. `git add flake.nix .envrc && direnv allow`
+            1. Edit `packages` in `flake.nix` and hooks in `.pre-commit-config.yaml`
+            2. `git init` (if needed), then `git add -A && direnv allow`
+               (installs the prek git hook on first load)
+            3. Add CI that runs `nix develop -c prek run --all-files`
           '';
         };
         default = self.templates.devshell;

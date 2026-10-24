@@ -1,0 +1,25 @@
+# Git hooks, run with `prek` (drop-in pre-commit replacement). CI must run the same file:
+#   nix develop -c prek run --all-files --show-diff-on-failure
+# Hooks are `language: system`: tools come from the flake devShell (pinned by flake.lock).
+# Add the stack's formatter/linter/type-check here (e.g. pnpm check, ruff, cargo clippy).
+default_install_hook_types: [pre-commit]
+repos:
+  - repo: builtin
+    hooks:
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: detect-private-key
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: gitleaks (secrets)
+        language: system
+        entry: gitleaks git --pre-commit --staged --redact --no-banner
+        pass_filenames: false
+      - id: nixfmt
+        name: nixfmt
+        language: system
+        entry: nixfmt
+        files: \.nix$
