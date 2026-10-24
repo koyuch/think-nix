@@ -31,6 +31,22 @@
     , nur
     , nix-vscode-extensions
     , ... }@inputs: {
+    # Project scaffolding: `nix flake init -t ~/projects/think-nix#devshell`
+    templates = {
+      devshell = {
+        path = ./templates/devshell;
+        description = "flake.nix devShell (nixos-unstable) + direnv .envrc";
+        welcomeText = ''
+          # Dev shell scaffolded
+
+          1. Edit `packages` in `flake.nix`
+          2. `echo .direnv/ >> .gitignore`
+          3. `git add flake.nix .envrc && direnv allow`
+        '';
+      };
+      default = self.templates.devshell;
+    };
+
     # hostname
     nixosConfigurations.think-nix = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";

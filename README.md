@@ -67,11 +67,16 @@ My personal NixOS configuration for a ThinkPad laptop, managed with Nix Flakes.
 
 ### Home Manager
 
-User-specific packages and configurations are managed by Home Manager. After the initial system setup, apply the home configuration:
+User-specific packages and configurations are managed by Home Manager, which runs as a NixOS module.
+There is no separate `home-manager switch`: `sudo nixos-rebuild switch --flake .#think-nix` applies both.
 
-```bash
-home-manager switch --flake .#koyuch@think-nix
-```
+### AI agents
+
+- [AGENTS.md](AGENTS.md): rules for agents working in this repo.
+- [agents/global.md](agents/global.md): user-wide agent instructions. Home Manager symlinks it to
+  `~/.config/kilo/AGENTS.md`, `~/.config/opencode/AGENTS.md`, `~/.gemini/GEMINI.md`, `~/.claude/CLAUDE.md`,
+  `~/.pi/agent/AGENTS.md`, and aider's `read:` list.
+- Project dev shell scaffold: `nix flake init -t ~/projects/think-nix#devshell`.
 
 ## 🔄 Maintenance
 
@@ -106,6 +111,8 @@ sudo nix-collect-garbage --delete-older-than 7d
 - `configuration.nix`: System-wide NixOS configuration
 - `home.nix`: User-specific Home Manager configuration
 - `hardware-configuration.nix`: Hardware-specific configuration (generated)
+- `agents/global.md`: Global AI agent instructions
+- `templates/devshell/`: Project dev shell template (flake + direnv)
 
 ## 🔗 Useful Resources
 

@@ -297,6 +297,28 @@
 #    };
 #  };
 
+  # Shared global instructions for AI agents. Out-of-store symlinks point at the
+  # repo checkout, so edits to agents/global.md apply immediately (no rebuild).
+  # Only the instruction files are managed - the tools' own config files
+  # (opencode.json, ~/.gemini/settings.json, ...) stay hand-managed.
+  home.file =
+    let
+      agentsGlobal = config.lib.file.mkOutOfStoreSymlink
+        "${config.home.homeDirectory}/projects/think-nix/agents/global.md";
+    in
+    {
+      ".config/kilo/AGENTS.md".source = agentsGlobal;
+      ".config/opencode/AGENTS.md".source = agentsGlobal;
+      ".gemini/GEMINI.md".source = agentsGlobal;
+      ".claude/CLAUDE.md".source = agentsGlobal;
+      ".pi/agent/AGENTS.md".source = agentsGlobal;
+      # aider has no global instructions file; load it as a read-only context file
+      ".aider.conf.yml".text = ''
+        read:
+          - ${config.home.homeDirectory}/projects/think-nix/agents/global.md
+      '';
+    };
+
   # Add other home-manager configurations here
 
   # This value determines the Home Manager release that your configuration is
