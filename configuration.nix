@@ -118,6 +118,7 @@
         mode = "u=rwx,g=rx,o=";
       }
       "/var/db/sudo" # persist sudo timestamps, so there'll be no "welcome" message
+      "/var/lib/fprint" # fprintd enrolled fingerprints
     ];
     files = [
       "/etc/machine-id"
@@ -185,6 +186,9 @@
   services.printing.enable = true;
 
   hardware.bluetooth.enable = true;
+
+  # Synaptics Prometheus 06cb:00bd fingerprint reader (libfprint synaptics driver, no TOD needed)
+  services.fprintd.enable = true;
   # Enable sound.
   # hardware.pulseaudio.enable = true;
   # OR
@@ -378,6 +382,16 @@
   services.udev.packages = [ ];
 
   security.pam.services.login.gnupg.enable = true;
+
+  # Fingerprint only for sudo (agents' sudo calls = one finger touch; password stays
+  # as fallback). NixOS defaults fprintAuth to fprintd.enable for every PAM service;
+  # keep password-only for login/sddm so pam_gnupg gets the password to unlock
+  # gpg-agent. Plasma's screen locker runs the separate kde-fingerprint service in
+  # parallel with password, so "kde" stays password-only.
+  security.pam.services.sudo.fprintAuth = true;
+  security.pam.services.login.fprintAuth = false;
+  security.pam.services.sddm.fprintAuth = false;
+  security.pam.services.kde.fprintAuth = false;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
