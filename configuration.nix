@@ -229,6 +229,7 @@
     yq # yaml query tool
 
     # --- Files / archives / sync ---
+    file
     zip
     unzip
     p7zip # 7z, incl. rar extraction
