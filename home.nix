@@ -1,9 +1,14 @@
 # home.nix
-{ config, pkgs, pkgs-unstable, ... }:
+{
+  config,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 
 {
   programs.konsole.profiles."Default" = {
-#    font.name = "MesloLGS NF";
+    #    font.name = "MesloLGS NF";
     extraConfig = {
       HistorySize = 10000;
     };
@@ -23,9 +28,9 @@
     kscreenlocker.appearance.wallpaperPictureOfTheDay.provider = "bing";
 
     workspace = {
-#      colorScheme = "BreezeDark";
+      #      colorScheme = "BreezeDark";
       lookAndFeel = "org.kde.breezedark.desktop";
-#      theme = "breeze-dark";
+      #      theme = "breeze-dark";
     };
 
     kwin.nightLight = {
@@ -39,21 +44,20 @@
       transitionTime = 120;
     };
 
-
     powerdevil = {
       AC = {
-#        powerButtonAction = "lockScreen";
+        #        powerButtonAction = "lockScreen";
         autoSuspend = {
-#          action = "nothing";
+          #          action = "nothing";
           idleTimeout = 1800;
         };
         dimDisplay = {
-#          enable = false;
+          #          enable = false;
           idleTimeout = 900;
         };
         turnOffDisplay = {
           idleTimeout = 900;
-#          idleTimeoutWhenLocked = "immediately";
+          #          idleTimeoutWhenLocked = "immediately";
         };
       };
       battery = {
@@ -74,10 +78,10 @@
     enable = true;
     enableSshSupport = true;
     enableZshIntegration = true;
-    defaultCacheTtl = 28800;        # 8 hours
-    maxCacheTtl = 86400;            # 24 hours
-    defaultCacheTtlSsh = 28800;     # 8 hours for SSH keys
-    maxCacheTtlSsh = 86400;         # 24 hours for SSH keys
+    defaultCacheTtl = 28800; # 8 hours
+    maxCacheTtl = 86400; # 24 hours
+    defaultCacheTtlSsh = 28800; # 8 hours for SSH keys
+    maxCacheTtlSsh = 86400; # 24 hours for SSH keys
     pinentry.package = pkgs.pinentry-qt;
   };
 
@@ -207,95 +211,97 @@
   };
 
   programs.vscode = with pkgs-unstable; {
-        enable = true;
-        package = vscode; # or pkgs.vscode
-        profiles.default.extensions =
-          (with vscode-extensions; [
-            ms-vscode-remote.remote-containers
-            ms-vscode-remote.remote-ssh
+    enable = true;
+    package = vscode; # or pkgs.vscode
+    profiles.default.extensions = (
+      with vscode-extensions;
+      [
+        ms-vscode-remote.remote-containers
+        ms-vscode-remote.remote-ssh
 
-            github.copilot
-            github.copilot-chat
-            github.vscode-github-actions
-            rooveterinaryinc.roo-cline # roo code
-            kilocode.kilo-code
-            # saoudrizwan.claude-dev # cline
-            # continue.continue
-            # Google.gemini-cli-vscode-ide-companion
-            # tabnine.tabnine-vscode # just chat
-            # amazonwebservices.amazon-q-vscode
+        github.copilot
+        github.copilot-chat
+        github.vscode-github-actions
+        rooveterinaryinc.roo-cline # roo code
+        kilocode.kilo-code
+        # saoudrizwan.claude-dev # cline
+        # continue.continue
+        # Google.gemini-cli-vscode-ide-companion
+        # tabnine.tabnine-vscode # just chat
+        # amazonwebservices.amazon-q-vscode
 
-            ms-python.python
-            ms-python.vscode-pylance
-            ms-toolsai.jupyter
-            ms-python.debugpy
-            ms-python.isort
-            ms-python.black-formatter
-            ms-python.pylint
-            ms-python.flake8
-            ms-python.mypy-type-checker
+        ms-python.python
+        ms-python.vscode-pylance
+        ms-toolsai.jupyter
+        ms-python.debugpy
+        ms-python.isort
+        ms-python.black-formatter
+        ms-python.pylint
+        ms-python.flake8
+        ms-python.mypy-type-checker
 
-            ms-vscode.makefile-tools
+        ms-vscode.makefile-tools
 
-            jnoortheen.nix-ide
-            ms-azuretools.vscode-docker
-            ms-kubernetes-tools.vscode-kubernetes-tools
-            redhat.vscode-yaml
-            sonarsource.sonarlint-vscode
-            bierner.markdown-mermaid
+        jnoortheen.nix-ide
+        ms-azuretools.vscode-docker
+        ms-kubernetes-tools.vscode-kubernetes-tools
+        redhat.vscode-yaml
+        sonarsource.sonarlint-vscode
+        bierner.markdown-mermaid
 
-            # java extensions
-            # vscjava.vscode-java-pack
-            # redhat.java
-            # vscjava.vscode-java-debug
-            # vscjava.vscode-java-test
-            # vscjava.vscode-maven
-            # vscjava.vscode-gradle
-            # vscjava.vscode-java-dependency
-          ]);
-          # (with open-vsx; [
-          #   # codeium.codeium # windsurf as plugin is not usable
-          #   jeppeandersen.vscode-kafka
-          # ]) ++
-          # vscode-utils.extensionsFromVscodeMarketplace [
-          #   {
-          #     name = "copilot-chat";
-          #     publisher = "github";
-          #     version = "0.23.2024110702"; #6.2025030506"; # Replace with your desired version
-          #     sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
-          #   }
-          # ];
-  #        (with vscode-marketplace; [
-  #          tomaszbartoszewski.avro-tools
-  #        ]) ++
-  #        (with (forVSCodeVersion vscodium.version).vscode-marketplace ; [
-  #          github.copilot-chat
-  #        ]) ++
+        # java extensions
+        # vscjava.vscode-java-pack
+        # redhat.java
+        # vscjava.vscode-java-debug
+        # vscjava.vscode-java-test
+        # vscjava.vscode-maven
+        # vscjava.vscode-gradle
+        # vscjava.vscode-java-dependency
+      ]
+    );
+    # (with open-vsx; [
+    #   # codeium.codeium # windsurf as plugin is not usable
+    #   jeppeandersen.vscode-kafka
+    # ]) ++
+    # vscode-utils.extensionsFromVscodeMarketplace [
+    #   {
+    #     name = "copilot-chat";
+    #     publisher = "github";
+    #     version = "0.23.2024110702"; #6.2025030506"; # Replace with your desired version
+    #     sha256 = "sha256-mCmZs5xGxcqHyo8NyMjk2mu9LmxFlMb2NGUwjXg27JA="; # Replace with actual hash
+    #   }
+    # ];
+    #        (with vscode-marketplace; [
+    #          tomaszbartoszewski.avro-tools
+    #        ]) ++
+    #        (with (forVSCodeVersion vscodium.version).vscode-marketplace ; [
+    #          github.copilot-chat
+    #        ]) ++
   };
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
     };
   };
 
-#  systemd.user.services.plasma-shell-watchdog = {
-#    Unit = {
-#      Description = "Plasma Shell Watchdog";
-#      After = "graphical-session.target";
-#      PartOf = "graphical-session.target";
-#    };
-#    Service = {
-#      Type = "simple";
-#      ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do if ! pgrep -f plasmashell > /dev/null; then systemctl --user restart plasma-plasmashell.service; fi; sleep 60; done'";
-#      Restart = "always";
-#      RestartSec = 10;
-#    };
-#    Install = {
-#      WantedBy = ["graphical-session.target"];
-#    };
-#  };
+  #  systemd.user.services.plasma-shell-watchdog = {
+  #    Unit = {
+  #      Description = "Plasma Shell Watchdog";
+  #      After = "graphical-session.target";
+  #      PartOf = "graphical-session.target";
+  #    };
+  #    Service = {
+  #      Type = "simple";
+  #      ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do if ! pgrep -f plasmashell > /dev/null; then systemctl --user restart plasma-plasmashell.service; fi; sleep 60; done'";
+  #      Restart = "always";
+  #      RestartSec = 10;
+  #    };
+  #    Install = {
+  #      WantedBy = ["graphical-session.target"];
+  #    };
+  #  };
 
   # Shared global instructions for AI agents. Out-of-store symlinks point at the
   # repo checkout, so edits to agents/global.md apply immediately (no rebuild).
@@ -303,8 +309,7 @@
   # (opencode.json, ~/.gemini/settings.json, ...) stay hand-managed.
   home.file =
     let
-      agentsGlobal = config.lib.file.mkOutOfStoreSymlink
-        "${config.home.homeDirectory}/projects/think-nix/agents/global.md";
+      agentsGlobal = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/think-nix/agents/global.md";
     in
     {
       ".config/kilo/AGENTS.md".source = agentsGlobal;

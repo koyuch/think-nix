@@ -22,64 +22,68 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = { self
-    , nixpkgs
-    , nixpkgs-unstable
-    , impermanence
-    , home-manager
-    , plasma-manager
-    , nur
-    , nix-vscode-extensions
-    , ... }@inputs: {
-    # Project scaffolding: `nix flake init -t ~/projects/think-nix#devshell`
-    templates = {
-      devshell = {
-        path = ./templates/devshell;
-        description = "flake.nix devShell (nixos-unstable) + direnv .envrc";
-        welcomeText = ''
-          # Dev shell scaffolded
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      impermanence,
+      home-manager,
+      plasma-manager,
+      nur,
+      nix-vscode-extensions,
+      ...
+    }@inputs:
+    {
+      # Project scaffolding: `nix flake init -t ~/projects/think-nix#devshell`
+      templates = {
+        devshell = {
+          path = ./templates/devshell;
+          description = "flake.nix devShell (nixos-unstable) + direnv .envrc";
+          welcomeText = ''
+            # Dev shell scaffolded
 
-          1. Edit `packages` in `flake.nix`
-          2. `echo .direnv/ >> .gitignore`
-          3. `git add flake.nix .envrc && direnv allow`
-        '';
-      };
-      default = self.templates.devshell;
-    };
-
-    # hostname
-    nixosConfigurations.think-nix = nixpkgs.lib.nixosSystem rec {
-      system = "x86_64-linux";
-      # The `specialArgs` parameter passes the non-default nixpkgs instances to other nix modules
-      specialArgs = {
-        # To use packages from nixpkgs-unstable, we configure some parameters for it first
-        pkgs-unstable = import nixpkgs-unstable {
-          # Refer to the `system` parameter from the outer scope recursively
-          inherit system;
-          config.allowUnfree = true;
-          overlays = [
-            nix-vscode-extensions.overlays.default
-          ];
+            1. Edit `packages` in `flake.nix`
+            2. `echo .direnv/ >> .gitignore`
+            3. `git add flake.nix .envrc && direnv allow`
+          '';
         };
+        default = self.templates.devshell;
       };
-      modules = [
-        impermanence.nixosModules.impermanence
-        # Adds the NUR overlay
-        nur.modules.nixos.default
-        # Import the previous configuration.nix we used, so the old configuration file still takes effect
-        ./configuration.nix
 
-        # Add home-manager as a NixOS module
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "hm-backup";
-          home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-          home-manager.extraSpecialArgs = { inherit (specialArgs) pkgs-unstable; };
-          home-manager.users.koyuch = import ./home.nix;
-        }
-      ];
+      # hostname
+      nixosConfigurations.think-nix = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        # The `specialArgs` parameter passes the non-default nixpkgs instances to other nix modules
+        specialArgs = {
+          # To use packages from nixpkgs-unstable, we configure some parameters for it first
+          pkgs-unstable = import nixpkgs-unstable {
+            # Refer to the `system` parameter from the outer scope recursively
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              nix-vscode-extensions.overlays.default
+            ];
+          };
+        };
+        modules = [
+          impermanence.nixosModules.impermanence
+          # Adds the NUR overlay
+          nur.modules.nixos.default
+          # Import the previous configuration.nix we used, so the old configuration file still takes effect
+          ./configuration.nix
+
+          # Add home-manager as a NixOS module
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "hm-backup";
+            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+            home-manager.extraSpecialArgs = { inherit (specialArgs) pkgs-unstable; };
+            home-manager.users.koyuch = import ./home.nix;
+          }
+        ];
+      };
     };
-  };
 }

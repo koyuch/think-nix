@@ -2,16 +2,25 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, pkgs-unstable, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Enable the Flakes feature and the accompanying new nix command-line tool
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nix.settings.auto-optimise-store = true;
 
@@ -30,14 +39,29 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   fileSystems = {
-    "/".options = [ "compress=zstd" "noatime" ];
-    "/home".options = [ "compress=zstd" "noatime" ];
-    "/nix".options = [ "compress=zstd" "noatime" ];
+    "/".options = [
+      "compress=zstd"
+      "noatime"
+    ];
+    "/home".options = [
+      "compress=zstd"
+      "noatime"
+    ];
+    "/nix".options = [
+      "compress=zstd"
+      "noatime"
+    ];
     "/persist" = {
-        options = [ "compress=zstd" "noatime" ];
-        neededForBoot = true;
+      options = [
+        "compress=zstd"
+        "noatime"
+      ];
+      neededForBoot = true;
     };
-    "/var/lib/libvirt".options = [ "compress=zstd" "noatime" ];
+    "/var/lib/libvirt".options = [
+      "compress=zstd"
+      "noatime"
+    ];
   };
 
   boot.initrd.systemd.services.btrfs-root-rotate = {
@@ -81,14 +105,19 @@
   # Persistence configuration
   environment.persistence."/persist" = {
     directories = [
-      "/etc/nixos"     # Keep NixOS configuration
+      "/etc/nixos" # Keep NixOS configuration
       "/etc/NetworkManager/system-connections"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/bluetooth"
       "/var/log"
-      { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
-      "/var/db/sudo"  # persist sudo timestamps, so there'll be no "welcome" message
+      {
+        directory = "/var/lib/colord";
+        user = "colord";
+        group = "colord";
+        mode = "u=rwx,g=rx,o=";
+      }
+      "/var/db/sudo" # persist sudo timestamps, so there'll be no "welcome" message
     ];
     files = [
       "/etc/machine-id"
@@ -103,11 +132,10 @@
     ];
   };
 
-
   networking.hostName = "think-nix"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Bratislava";
@@ -132,7 +160,6 @@
     # (nerdfonts.override { fonts = [ "FiraCode" ]; })  # deprecated way
   ];
 
-
   fonts.fontconfig.defaultFonts.monospace = [ "MesloLGS NF" ];
 
   # Enable the X11 windowing system.
@@ -151,7 +178,7 @@
   services.xserver.xkb = {
     layout = "us,sk";
     variant = ",qwerty";
-    options = "grp:alt_shift_toggle";  # Use Alt+Shift to switch between layouts
+    options = "grp:alt_shift_toggle"; # Use Alt+Shift to switch between layouts
   };
 
   # Enable CUPS to print documents.
@@ -180,12 +207,17 @@
     isNormalUser = true;
     # generated with `mkpasswd -m sha-512`
     hashedPassword = "$6$1ZhuIyw0X6Zsps8q$CgN2iaTNzPyA0Vf1cBDH7GtBe3euP21nPw5BnHNBjrHf.pF/weJqNgeCDGbSUBmY1U.tPcqeKK0MlDN/AkfYe/";
-    extraGroups = [ "wheel" "networkmanager" "libvirtd" "podman"]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "libvirtd"
+      "podman"
+    ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh; # Make zsh default shell
 
-  #  packages = with pkgs; [
-  #     tree
-  #   ];
+    #  packages = with pkgs; [
+    #     tree
+    #   ];
   };
 
   #programs.firefox.enable = true;
@@ -195,142 +227,147 @@
   # NOTE: Nix has no "meta package" for a base CLI set - the groups below
   # are plain comments inside one list. If this grows, move groups into
   # `let baseCli = with pkgs; [ ... ]; in` bindings.
-  environment.systemPackages = (with pkgs; [
-    # --- Shell / terminal basics ---
-    # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    bash-completion
-    nix-bash-completions
-    gnumake
-    tmux
-    byobu
-    kitty
-    kitty-themes
-    kdePackages.yakuake
-    wl-clipboard
-    fira-code
-    vim
-    less
+  environment.systemPackages =
+    (with pkgs; [
+      # --- Shell / terminal basics ---
+      # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      bash-completion
+      nix-bash-completions
+      gnumake
+      tmux
+      byobu
+      kitty
+      kitty-themes
+      kdePackages.yakuake
+      wl-clipboard
+      fira-code
+      vim
+      less
 
-    # --- Modern CLI replacements (base set) ---
-    ripgrep # rg - grep alternative
-    fd # find alternative
-    fzf # fuzzy finder
-    bat # cat alternative
-    zoxide # z - smart cd
-    eza # ls alternative
-    btop # htop alternative
-    ncdu # ncdu - disk usage
-    dust # du alternative
-    duf # df alternative
-    procs # ps alternative
-    tldr # concise man pages
-    tree # directory tree
-    jq # json query tool
-    yq # yaml query tool
+      # --- Modern CLI replacements (base set) ---
+      ripgrep # rg - grep alternative
+      fd # find alternative
+      fzf # fuzzy finder
+      bat # cat alternative
+      zoxide # z - smart cd
+      eza # ls alternative
+      btop # htop alternative
+      ncdu # ncdu - disk usage
+      dust # du alternative
+      duf # df alternative
+      procs # ps alternative
+      tldr # concise man pages
+      tree # directory tree
+      jq # json query tool
+      yq # yaml query tool
 
-    # --- Files / archives / sync ---
-    file
-    zip
-    unzip
-    p7zip # 7z, incl. rar extraction
-    rsync
+      # --- Files / archives / sync ---
+      file
+      zip
+      unzip
+      p7zip # 7z, incl. rar extraction
+      rsync
 
-    # --- Network / DNS / HTTP ---
-    # mtr provided via programs.mtr
-    dog # modern dig alternative
-    nmap
-    iperf3
-    socat
-    xh # friendly httpie-like client
-    httpie
+      # --- Network / DNS / HTTP ---
+      # mtr provided via programs.mtr
+      dog # modern dig alternative
+      nmap
+      iperf3
+      socat
+      xh # friendly httpie-like client
+      httpie
 
-    # --- Monitoring / hardware / tracing ---
-    # usbutils (lsusb) below in mobile section too
-    lsof
-    strace
-    pciutils # lspci
-    lm_sensors # sensors
-    iotop
+      # --- Monitoring / hardware / tracing ---
+      # usbutils (lsusb) below in mobile section too
+      lsof
+      strace
+      pciutils # lspci
+      lm_sensors # sensors
+      iotop
 
-    # --- Nix / dev helpers ---
-    gh # github CLI
-    just # command runner
-    nil # nix LSP
-    alejandra # nix formatter
-    nix-tree # inspect /nix/store
-    pre-commit
-    jdk
-    python3
-    nodejs
-    uv
+      # --- Nix / dev helpers ---
+      gh # github CLI
+      just # command runner
+      nil # nix LSP
+      alejandra # nix formatter
+      nix-tree # inspect /nix/store
+      pre-commit
+      jdk
+      python3
+      nodejs
+      uv
 
-    # --- Security / secrets ---
-    usbutils
-    gnupg
-    pinentry-qt
-    git
-    wget
-    curl
-    (pass.withExtensions (subpkgs: with subpkgs; [
-      pass-audit
-      pass-otp
-      pass-genphrase
-      nur.repos.onemoresuza.pass-extension-tail
-    ]))
+      # --- Security / secrets ---
+      usbutils
+      gnupg
+      pinentry-qt
+      git
+      wget
+      curl
+      (pass.withExtensions (
+        subpkgs: with subpkgs; [
+          pass-audit
+          pass-otp
+          pass-genphrase
+          nur.repos.onemoresuza.pass-extension-tail
+        ]
+      ))
 
-    # --- Remote / desktop ---
-    freerdp
-    mpg123
-    vlc
-    kodi
-    chromium
-    krusader
-    kdiff3
-    virt-manager
-    spotify
-    # wasistlos
-#    teams-for-linux # not working temporarily (18.5.2025)
-    slack
-    dive # look into docker image layers
-    podman-tui # status of containers in the terminal
-    # docker-compose # start group of containers for dev
-    podman-compose # start group of containers for dev
-    awscli2
-    kubectl
-    kubernetes-helm
-    k9s
-#    puppeteer-cli
-#    xorg.libXScrnSaver
-    tesseract
-    libimobiledevice # for iphones
-    ifuse # for iphones
-    android-tools      # adb & fastboot
-    exfatprogs        # exfat filesystem support
-#    libmtp             # MTP lib for fallback
-#    jetbrains.idea-ultimate
-    teams-for-linux
-    qbittorrent
-    rpi-imager  # temporarily disabled - build failing with Qt6 CMake error
-  ]) ++
-  (with pkgs-unstable; [
-    (firefox.override { nativeMessagingHosts = [ passff-host ]; })
-#    aider-chat-full
-    aider-chat
-    # code-cursor
-    # windsurf
-    antigravity-cli
-    antigravity-ide
-    opencode
-    # jetbrains.idea-ultimate
-  ]);
+      # --- Remote / desktop ---
+      freerdp
+      mpg123
+      vlc
+      kodi
+      chromium
+      krusader
+      kdiff3
+      virt-manager
+      spotify
+      # wasistlos
+      #    teams-for-linux # not working temporarily (18.5.2025)
+      slack
+      dive # look into docker image layers
+      podman-tui # status of containers in the terminal
+      # docker-compose # start group of containers for dev
+      podman-compose # start group of containers for dev
+      awscli2
+      kubectl
+      kubernetes-helm
+      k9s
+      #    puppeteer-cli
+      #    xorg.libXScrnSaver
+      tesseract
+      libimobiledevice # for iphones
+      ifuse # for iphones
+      android-tools # adb & fastboot
+      exfatprogs # exfat filesystem support
+      #    libmtp             # MTP lib for fallback
+      #    jetbrains.idea-ultimate
+      teams-for-linux
+      qbittorrent
+      rpi-imager # temporarily disabled - build failing with Qt6 CMake error
+    ])
+    ++ (with pkgs-unstable; [
+      (firefox.override { nativeMessagingHosts = [ passff-host ]; })
+      #    aider-chat-full
+      aider-chat
+      # code-cursor
+      # windsurf
+      antigravity-cli
+      antigravity-ide
+      opencode
+      # jetbrains.idea-ultimate
+    ]);
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "spotify"
-    "slack"
-    "vscode-extension-github-copilot-chat"
-    "idea-ultimate"
-    "teams-for-linux"
-  ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "spotify"
+      "slack"
+      "vscode-extension-github-copilot-chat"
+      "idea-ultimate"
+      "teams-for-linux"
+    ];
 
   programs.zsh.enable = true;
 
@@ -381,7 +418,7 @@
       onBoot = "ignore";
       onShutdown = "shutdown";
 
-      allowedBridges = ["default"];
+      allowedBridges = [ "default" ];
     };
   };
 
@@ -395,7 +432,7 @@
     enable = true;
     useRoutingFeatures = "client";
   };
-  
+
   networking.firewall = {
     trustedInterfaces = [ "tailscale0" ];
     checkReversePath = "loose";
