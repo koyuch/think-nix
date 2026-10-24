@@ -311,8 +311,14 @@
   home.file =
     let
       agentsGlobal = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/think-nix/agents/global.md";
+      # On-demand Agent Skills (SKILL.md). ~/.agents/skills is the cross-tool dir scanned
+      # by Kilo, opencode, Gemini/Antigravity and pi. (Claude Code would need
+      # ~/.claude/skills, but Kilo also scans that and warns on duplicates - add only if
+      # Claude Code gets installed.)
+      agentsSkills = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/think-nix/agents/skills";
     in
     {
+      ".agents/skills".source = agentsSkills;
       ".config/kilo/AGENTS.md".source = agentsGlobal;
       ".config/opencode/AGENTS.md".source = agentsGlobal;
       ".gemini/GEMINI.md".source = agentsGlobal;
