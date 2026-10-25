@@ -108,6 +108,8 @@
       "/etc/nixos" # Keep NixOS configuration
       "/etc/NetworkManager/system-connections"
       "/var/lib/nixos"
+      "/var/lib/tailscale"
+      "/var/lib/NetworkManager"
       "/var/lib/systemd/coredump"
       "/var/lib/bluetooth"
       "/var/log"
@@ -445,6 +447,31 @@
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "client";
+    openFirewall = true;
+  };
+
+  # Tailscale MagicDNS overwrites /etc/resolv.conf when NM uses the resolvconf
+  # backend. After suspend/resume WiFi (iwlwifi) takes ~10s to re-DHCP, and
+  # tailscaled re-reads an empty upstream list (Resolvercfg .:[] -> SERVFAIL
+  # until manual `tailscale down/up`). systemd-resolved gives Tailscale a
+  # stable DBus API for upstream DNS, surviving resume.
+  services.resolved.enable = true;
+  networking.networkmanager.dns = "systemd-resolved";
+  # Best practice for a roaming laptop (also Tailscale-compatible):
+  # - DNSSEC=allow-downgrade: validate when the upstream supports it, fall
+  #   back on captive portals / home routers (10.0.0.1) that don't. `true`
+  #   would hard-fail on those networks.
+  # - DNSOverTLS=opportunistic: encrypt to providers that support it
+  #   (fallback Quad9/Cloudflare), plaintext fallback for local routers
+  #   without TLS. `strict` would break 10.0.0.1.
+  # - LLMNR=false: legacy spoof-prone protocol; mDNS stays on for .local
+  #   (printers, Chromecast). Tailscale already disables both on tailscale0.
+  # Cache stays at its default (yes) for efficiency.
+  services.resolved.settings.Resolve = {
+    DNSSEC = "allow-downgrade";
+    DNSOverTLS = "opportunistic";
+    LLMNR = false;
+    MulticastDNS = true;
   };
 
   networking.firewall = {
@@ -470,6 +497,21 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  # Host keys live on the root subvolume by default, which is wiped on every
+  # boot (impermanence). Keep them under /persist so the host identity (and
+  # clients' known_hosts) survives reboots. Seed once before the next reboot:
+  #   sudo mkdir -p /persist/etc/ssh && sudo cp -a /etc/ssh/ssh_host_* /persist/etc/ssh/
+  services.openssh.hostKeys = [
+    {
+      path = "/persist/etc/ssh/ssh_host_ed25519_key";
+      type = "ed25519";
+    }
+    {
+      path = "/persist/etc/ssh/ssh_host_rsa_key";
+      type = "rsa";
+      bits = 4096;
+    }
+  ];
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ]; # SSH
