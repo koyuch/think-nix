@@ -317,11 +317,15 @@
       # ~/.claude/skills, but Kilo also scans that and warns on duplicates - add only if
       # Claude Code gets installed.)
       agentsSkills = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/think-nix/agents/skills";
+      # Custom primary agent modes (research, spec) shared by Kilo and opencode.
+      agentsModes = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/think-nix/agents/modes";
     in
     {
       ".agents/skills".source = agentsSkills;
       ".config/kilo/AGENTS.md".source = agentsGlobal;
+      ".config/kilo/agents".source = agentsModes;
       ".config/opencode/AGENTS.md".source = agentsGlobal;
+      ".config/opencode/agents".source = agentsModes;
       ".gemini/GEMINI.md".source = agentsGlobal;
       ".claude/CLAUDE.md".source = agentsGlobal;
       ".pi/agent/AGENTS.md".source = agentsGlobal;

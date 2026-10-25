@@ -78,6 +78,8 @@ There is no separate `home-manager switch`: `sudo nixos-rebuild switch --flake .
   `~/.pi/agent/AGENTS.md`, and aider's `read:` list.
 - [agents/skills/](agents/skills/): on-demand Agent Skills (spec-driven TDD, decision brainstorm, project bootstrap),
   linked to `~/.agents/skills`.
+- [agents/modes/](agents/modes/): custom primary agent modes (`research`, `spec`), linked to
+  `~/.config/kilo/agents` and `~/.config/opencode/agents`.
 - Global MCP servers (context7, mcp-nixos): `programs.mcp` in `home.nix`.
 - Project dev shell scaffold: `nix flake init -t ~/projects/think-nix#devshell`.
 

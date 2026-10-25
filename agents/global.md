@@ -8,6 +8,7 @@ On-demand skills live in `~/.agents/skills` (source: `think-nix/agents/skills/`)
 **spec-driven-tdd** (features/projects), **decision-brainstorm** (choices with real alternatives),
 **project-bootstrap** (dev shell, hooks, CI, MCP, docs layout). Tools without skill support should read
 the SKILL.md files directly.
+Custom primary agent modes (`research`, `spec`) live in `think-nix/agents/modes/` (symlinked to `~/.config/{kilo,opencode}/agents`).
 
 ## How to work
 
