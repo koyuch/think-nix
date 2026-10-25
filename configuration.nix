@@ -485,13 +485,14 @@
     # Enable sudo
     enable = true;
 
-    # Extend the timeout to 30 minutes (default is 5 minutes)
     extraConfig = ''
-      # Set timeout to 30 minutes
-      Defaults timestamp_timeout=30
+      # Short timeout (15s = 0.25m) so chained sudo commands in a single shell
+      # call share one fingerprint touch, while separate calls prompt again.
+      Defaults timestamp_timeout=0.25
 
-      # Optional: Set per-terminal timestamps instead of global
-      Defaults timestamp_type=ppid
+      # Global per-user timestamp (default was tty, and ppid broke wrapper scripts
+      # like asudo where sudo -v and exec sudo had different parent PIDs).
+      Defaults timestamp_type=global
     '';
   };
 

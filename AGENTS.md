@@ -56,8 +56,8 @@ Commit with the same prefix (`eval "$(direnv export bash)" && git commit …`), 
 
 Requires the user's explicit approval:
 
-- `sudo nixos-rebuild switch` / `boot` / `test`: run it after a green build and say why; the user approves via the
-  sudo popup (fingerprint touch, password fallback). Don't just hand the command over.
+- `asudo nixos-rebuild switch` / `boot` / `test`: run it after a green build and say why; the user approves via the
+  fingerprint touch (or password fallback). Verify the live change works *before* committing. Don't just hand the command over.
 - `nix flake update`: lockfile bumps are a separate `chore: update flake.lock` commit.
 - Bumping release branches (`nixos-26.05` / `release-26.05`): keep nixpkgs, home-manager and the `follows` in sync.
 

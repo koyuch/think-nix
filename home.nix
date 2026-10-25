@@ -157,13 +157,39 @@
     ansible
     mise
     mcp-nixos # on PATH for MCP clients without an HM module (kilo.jsonc)
-    # sudo for agent shells (no tty, output not visible): notify first, so the fingerprint
-    # touch isn't missed (pam_fprintd times out after ~30s, then ksshaskpass asks for the password)
+    # sudo for agent shells (no tty, output not visible): notify only when auth is needed,
+    # and auto-close the notification as soon as fingerprint verification finishes.
     (writeShellApplication {
       name = "asudo";
-      runtimeInputs = [ libnotify ];
+      runtimeInputs = [
+        libnotify
+        glib
+      ];
       text = ''
-        notify-send -u critical -t 30000 -i fingerprint "sudo requested by agent" "Touch the fingerprint sensor: $*"
+        case "''${1:-}" in
+          -k|-K|-V|-h|--help|--version)
+            exec /run/wrappers/bin/sudo "$@"
+            ;;
+        esac
+        if ! /run/wrappers/bin/sudo -n true 2>/dev/null; then
+          nid=$(notify-send -p -u normal -t 30000 -i fingerprint "sudo requested by agent" "Touch the fingerprint sensor: $*")
+          (
+            gdbus monitor --system --dest net.reactivated.Fprint 2>/dev/null | while IFS= read -r line; do
+              if [[ "$line" == *"VerifyStatus"* && "$line" == *"true"* ]]; then
+                gdbus call --session --dest org.freedesktop.Notifications \
+                  --object-path /org/freedesktop/Notifications \
+                  --method org.freedesktop.Notifications.CloseNotification "$nid" >/dev/null 2>&1 || true
+                break
+              fi
+            done
+          ) &
+          watcher=$!
+          /run/wrappers/bin/sudo -A -v
+          kill "$watcher" 2>/dev/null || true
+          gdbus call --session --dest org.freedesktop.Notifications \
+            --object-path /org/freedesktop/Notifications \
+            --method org.freedesktop.Notifications.CloseNotification "$nid" >/dev/null 2>&1 || true
+        fi
         exec /run/wrappers/bin/sudo -A "$@"
       '';
     })

@@ -16,7 +16,7 @@ Custom primary modes (`research`, `spec`): `think-nix/agents/modes/`.
 - **Critical thinking:** verify instead of recalling, state assumptions, doubt your first answer, flag shaky premises.
 - **Engineering:** Spec-Driven Development + TDD scaled to the change. SOLID, KISS, DRY, YAGNI, SoC. Record significant
   decisions as ADRs. Think as the whole team (product, architecture, security, ops), not only as the coder.
-- **Commits:** after each logical green step, one concern each, tests with code, Conventional Commits. Follow the repo's flow
+- **Commits:** after each logical green step (verified in practice — including after `nixos-rebuild switch` + runtime test when a system/HM change is involved), one concern each, tests with code, Conventional Commits. Follow the repo's flow
   (direct to `main` for personal/infra repos, else branch + PR). Never `--no-verify`. Push only when the repo's workflow expects it.
 - **Agentic flow:** keep going through the next steps on your own. Stop only for a question the user must answer or a manual
   step only they can do. That includes `sudo`: run it, the user approves via the popup. Don't hand over commands you can run.
