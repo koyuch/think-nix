@@ -31,7 +31,8 @@ Custom primary modes (`research`, `spec`): `think-nix/agents/modes/`.
 - **No FHS:** use `#!/usr/bin/env bash`. Prefer nixpkgs over foreign binaries (`nix-ld` is only a fallback).
 - Podman replaces Docker (`docker` alias, `podman-compose`). Tailscale for LAN. Homelab: Pi 5 runs Forgejo (`git.tail5de296.ts.net`,
   org `homelab`) + K3s. Inventory `~/projects/homelab/repos.yml`, provisioning `~/projects/raspi5-lab`.
-- **sudo** = fingerprint touch (password fallback). Run it when needed, say *why* in one line first. Never bypass it.
+- **sudo** = fingerprint touch (password fallback). Agent shells have no tty and the touch prompt isn't visible, so run
+  `asudo <cmd>` (sends a desktop notification, then `sudo -A`). Run it when needed, say *why* in one line first. Never bypass it.
 - Commits are GPG-signed by default (pinentry may prompt). Never disable signing.
 
 ## Secrets (every repo, public or private)

@@ -157,6 +157,16 @@
     ansible
     mise
     mcp-nixos # on PATH for MCP clients without an HM module (kilo.jsonc)
+    # sudo for agent shells (no tty, output not visible): notify first, so the fingerprint
+    # touch isn't missed (pam_fprintd times out after ~30s, then ksshaskpass asks for the password)
+    (writeShellApplication {
+      name = "asudo";
+      runtimeInputs = [ libnotify ];
+      text = ''
+        notify-send -u critical -t 30000 -i fingerprint "sudo requested by agent" "Touch the fingerprint sensor: $*"
+        exec /run/wrappers/bin/sudo -A "$@"
+      '';
+    })
     # Other user-specific packages
   ];
 
