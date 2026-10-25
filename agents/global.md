@@ -53,7 +53,7 @@ Custom primary agent modes (`research`, `spec`) live in `think-nix/agents/modes/
 
 - Never put secrets, tokens, keys, passwords or private credentials in git, prompts, logs or command output.
   Only `.env.example` (placeholders) gets committed; `.env*` is gitignored.
-- Store them in `pass` (GPG). Reference them from config instead of inlining: `{file:…}` / `{env:…}` in Kilo/opencode,
+- Store them in `pass` (GPG). Reference them from config instead of inlining: `{ file:… }` / `{ env:… }` (without spaces) in Kilo/opencode,
   CI secret stores, gitignored files. Never read `~/.password-store` or print `pass` output.
 - Every repo runs **gitleaks** in its pre-commit hook and CI (see below). If a secret was ever committed, treat it as leaked:
   tell the user and rotate it first.
@@ -120,7 +120,7 @@ Find packages with `nix search nixpkgs <term>`, the **nixos MCP**, or <https://s
   - `nixos`: NixOS / Home Manager options and packages. Use it before writing Nix options.
 - **Project-specific** servers (database, hosting, design, browser, …) go in the project's config
   (`kilo.jsonc` / `opencode.json` / `.mcp.json`) and get documented in its AGENTS.md. When a project would clearly
-  benefit from one, propose it. Auth via OAuth or `{env:…}` / `{file:…}` references, never inline tokens.
+  benefit from one, propose it. Auth via OAuth or `{ env:… }` / `{ file:… }` references, never inline tokens.
 
 ## Prefer modern approaches and latest versions
 

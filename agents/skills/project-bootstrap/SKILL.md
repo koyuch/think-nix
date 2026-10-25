@@ -47,13 +47,13 @@ Existing projects that already use husky/lint-staged (e.g. Node repos) can keep 
 
 - Never in git, in any repo, public or private. Only `.env.example` (placeholders) is committed. `.env*` is gitignored.
 - Runtime secrets come from `pass`, the platform's secret store (Forgejo/GitHub secrets, Vercel env), or a gitignored file
-  referenced by config (Kilo `{file:…}`, `{env:…}`).
+  referenced by config (Kilo `{ file:… }`, `{ env:… }` without spaces).
 - If a secret was ever committed: treat it as leaked. Rotate it first, then rewrite history if needed.
 
 ## 5. MCP servers for the project
 
 Global MCPs (context7, nixos) are already configured. Add only project-specific ones (database, hosting, design, …)
-to the project config: `kilo.jsonc` / `opencode.json` / `.mcp.json`. Use OAuth or `{env:…}` / `{file:…}` references,
+to the project config: `kilo.jsonc` / `opencode.json` / `.mcp.json`. Use OAuth or `{ env:… }` / `{ file:… }` references,
 never inline tokens. Document them in AGENTS.md.
 
 ## 6. Agent and docs layout
