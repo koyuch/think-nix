@@ -57,8 +57,8 @@ Never: `nix-env -i`, `nix-channel`, global `npm -g`/`pip install --user`, `curl 
 ## Projects: dev env, hooks, CI
 
 - Scaffold: `nix flake init -t ~/projects/think-nix#devshell` (flake + direnv + prek hooks incl. gitleaks). Flakes see only git-tracked files: `git add` first.
-- Agent shells don't load direnv: run `direnv exec . <cmd>` (matches the `direnv *` auto-approve rule; also for `git commit`, so hooks find their tools).
-  Fallback `nix develop -c <cmd>`; after `.envrc` changed or in a fresh checkout run `direnv allow` first.
+- Agent shells don't load direnv: run `eval "$(direnv export bash)" && <cmd>` (also for `git commit`, so hooks find their tools).
+  Prefix with `direnv allow &&` after `.envrc` changed or in a fresh checkout. Avoid `nix develop -c` (it trips the auto-approve rules).
 - Hooks = `.pre-commit-config.yaml` via **prek**; CI runs the same checks and is a required check on `main`.
   Don't re-run what hooks/CI already run, except to fix a failure. Full recipe: **project-bootstrap**.
 - `mise` only in projects that already use it.
