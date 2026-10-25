@@ -20,6 +20,10 @@ flowchart LR
 - Add the runtime/toolchain to `packages`, pinning majors to the deploy target (`nodejs_24` + `pnpm`, `python313` + `uv`, …)
 - `git add -A && direnv allow`. The devShell installs the prek hook on first load
 - Commit `flake.lock`; for app dependencies use the ecosystem lockfile (`pnpm-lock.yaml`, `uv.lock`)
+- Use the `nixos-unstable` input. Pin runtime **majors** to the deploy target (`nodejs_24`, `python313`, `jdk21`), not generic `nodejs`/`python3`.
+- **Node:** `pnpm` from the flake. **Python:** `uv` (`uv init/add/run`) with the flake's interpreter: set `UV_PYTHON_DOWNLOADS=never` in `shellHook`.
+- **Services** (Postgres, Redis…): start in the devShell with data under a gitignored project dir (see `~/projects/zozahrady/flake.nix`), or use `podman-compose`.
+- Handy ephemeral extras (`nix shell nixpkgs#…`): `ast-grep`, `difftastic`, `hyperfine`, `tokei`, `sd`, `watchexec`, `shfmt`, `actionlint`, `typos`.
 
 ## 2. Hooks (`.pre-commit-config.yaml`, run by `prek`)
 
