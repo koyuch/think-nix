@@ -42,7 +42,7 @@ Human docs: [README.md](README.md).
 ## Validate & apply
 
 Allowed without asking (no root, no system change). Run them from the repo dev shell
-(`eval "$(direnv export bash)" && …` or `nix develop -c …`):
+(`eval "$(direnv export bash)" && <cmd>`; avoid `nix develop -c`, it trips the auto-approve rules):
 
 ```bash
 prek run --all-files                              # hooks (also run on every commit)
@@ -52,12 +52,12 @@ nix store diff-closures /run/current-system ./result   # what would change
 ```
 
 **New files must be `git add`-ed before any of these.** Flakes ignore untracked files ("path does not exist" errors).
-Commit from inside the dev shell, because the hooks need `gitleaks`/`nixfmt`/`deadnix` on PATH.
+Commit with the same prefix (`eval "$(direnv export bash)" && git commit …`), because the hooks need `gitleaks`/`nixfmt`/`deadnix` on PATH.
 
 Requires the user's explicit approval:
 
-- `sudo nixos-rebuild switch` / `boot` / `test`: suggest the command after a green build and let the user run it
-  (they approve it with a fingerprint touch).
+- `sudo nixos-rebuild switch` / `boot` / `test`: run it after a green build and say why; the user approves via the
+  sudo popup (fingerprint touch, password fallback). Don't just hand the command over.
 - `nix flake update`: lockfile bumps are a separate `chore: update flake.lock` commit.
 - Bumping release branches (`nixos-26.05` / `release-26.05`): keep nixpkgs, home-manager and the `follows` in sync.
 
