@@ -330,7 +330,7 @@
       virt-manager
       spotify
       # wasistlos
-      #    teams-for-linux # not working temporarily (18.5.2025)
+      # teams-for-linux # not working temporarily (18.5.2025)
       slack
       dive # look into docker image layers
       podman-tui # status of containers in the terminal
@@ -355,10 +355,14 @@
     ])
     ++ (with pkgs-unstable; [
       (firefox.override { nativeMessagingHosts = [ passff-host ]; })
-      #    aider-chat-full
-      aider-chat
+      # aider-chat-full
+      # aider-chat # disabled 2026-10-26: unstable pulls broken python3.14-posthog-7.71.0 (mcp>=2); re-enable after upstream fix
       # code-cursor
       # windsurf
+      codex
+      codex-acp
+      codex-relay
+      codex-security
       antigravity-cli
       antigravity-ide
       opencode
@@ -370,8 +374,8 @@
     builtins.elem (lib.getName pkg) [
       "spotify"
       "slack"
-      "vscode-extension-github-copilot-chat"
-      "idea-ultimate"
+      # "vscode-extension-github-copilot-chat"
+      # "idea-ultimate"
       "teams-for-linux"
     ];
 

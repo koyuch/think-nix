@@ -256,11 +256,12 @@
         ms-vscode-remote.remote-containers
         ms-vscode-remote.remote-ssh
 
-        github.copilot
-        github.copilot-chat
+        # github.copilot
+        # github.copilot-chat
         github.vscode-github-actions
-        rooveterinaryinc.roo-cline # roo code
+        # rooveterinaryinc.roo-cline # roo code
         kilocode.kilo-code
+        # openai.chatgpt # codex
         # saoudrizwan.claude-dev # cline
         # continue.continue
         # Google.gemini-cli-vscode-ide-companion
